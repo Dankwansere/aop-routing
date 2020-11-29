@@ -13,16 +13,17 @@ export interface NavAuxiliary {
 }
 
 export class NavAux {
-    destinationPage: string;
+    destinationPage: string | number;
     navigationExtra: NavigationExtras;
     preprocess: Function;
     params: any;
 
-    constructor(destinationPage?: string, navigationExtra?: NavigationExtras | undefined, preprocess?: Function, param?: any) {
+    constructor(destinationPage?: string | number, navigationExtra?: NavigationExtras | undefined, preprocess?: Function, param?: any) {
         this.destinationPage = destinationPage;
         this.navigationExtra = navigationExtra;
         this.preprocess = preprocess;
         this.params = param;
     }
 }
+
 

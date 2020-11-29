@@ -5,24 +5,51 @@ import { NavigationService } from '../navigation/navigation.service';
 export function RouteNext(page?: string, navigationExtras?: NavigationExtras) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value;
-
         descriptor.value = function(...args: any[]) {
             const result = originalMethod.apply(this, args);
-            let navObj: NavAux;
-
-            if (page) {
-                navObj = createNavObj(page, navigationExtras);
-            }
-
-            if (result instanceof NavAux) {
-                navObj = updateNavObj(navObj, result);
-            }
+            const navObj = prepareNavObject(result, page, navigationExtras);
             NavigationService.goToNextPage(navObj);
         };
     };
 }
 
-function createNavObj(page: string, navigationExtras: NavigationExtras): NavAux {
+export function RouteBack() {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const originalMethod = descriptor.value;
+        descriptor.value = function(...args: any[]) {
+            const result = originalMethod.apply(this, args);
+            const navObj = prepareNavObject(result);
+            NavigationService.goToPreviousPage(navObj);
+        };
+    };
+}
+
+export function RouteToState(state?: number) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const originalMethod = descriptor.value;
+        descriptor.value = function(...args: any[]) {
+            const result = originalMethod.apply(this, args);
+            const navObj = prepareNavObject(result, state);
+            NavigationService.goToState(navObj);
+        };
+    };
+}
+
+function prepareNavObject(result: NavAux, page?: string | number, navigationExtras?: NavigationExtras): NavAux {
+    let navObj: NavAux;
+
+    if (page) {
+        navObj = createNavObj(page, navigationExtras);
+    }
+
+    if (result instanceof NavAux) {
+        navObj = updateNavObj(navObj, result);
+    }
+
+    return navObj;
+}
+
+function createNavObj(page: string | number, navigationExtras: NavigationExtras): NavAux {
     return new NavAux(page, navigationExtras);
 }
 
