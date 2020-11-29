@@ -12,6 +12,9 @@ export interface NavAuxiliary {
     preprocess?: Function;
 }
 
+/**
+ * Class to encapsulate extra navigation properties or methods that's required to execute the navigation process.
+ */
 export class NavAux {
     destinationPage: string | number;
     navigationExtra: NavigationExtras;
