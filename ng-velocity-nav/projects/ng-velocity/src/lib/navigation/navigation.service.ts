@@ -22,17 +22,30 @@ export class NavigationService {
     if (navObj.preprocess) {
       this.executePreProcessLogic(navObj.preprocess, navObj.params);
     }
+    if (typeof navObj.destinationPage === 'string') {
     this.routerRef.navigate([navObj.destinationPage], navObj.navigationExtra);
+    }
   }
 
-  static goToPreviousPage(): void {
+  static goToPreviousPage(navObj: NavAux): void {
+    if (navObj.preprocess) {
+      this.executePreProcessLogic(navObj.preprocess, navObj.params);
+    }
     this.locationRef.back();
+  }
+
+  static goToState(navObj: NavAux) {
+    if (navObj.preprocess) {
+      this.executePreProcessLogic(navObj.preprocess, navObj.params);
+    }
+    if (typeof navObj.destinationPage === 'number') {
+      history.go(navObj.destinationPage);
+    }
   }
 
   private static executePreProcessLogic(preProcessFunc: Function, param): void {
     if (preProcessFunc) {
-      preProcessFunc(param);
+      param ? preProcessFunc(param) : preProcessFunc();
     }
   }
-
 }
