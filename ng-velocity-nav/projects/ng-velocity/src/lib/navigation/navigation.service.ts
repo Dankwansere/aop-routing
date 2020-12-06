@@ -22,9 +22,9 @@ export class NavigationService {
    * Performs action to call router navigate method and uses the destinationPage property of the NavAux instance
    * to route to next page. If preprocess property of NavAux is provided, it will be executed prior to route navigation.
    * @param navObj - Instance of NavAux class
-   */ 
+   */
   static goToNextPage(navObj: NavAux): void {
-    if (navObj.preprocess) {
+    if (navObj && navObj.preprocess) {
       this.executePreProcessLogic(navObj.preprocess, navObj.params);
     }
     if (typeof navObj.destinationPage === 'string') {
@@ -38,7 +38,7 @@ export class NavigationService {
    * @param navObj - Instance of NavAux class
    */
   static goToPreviousPage(navObj: NavAux): void {
-    if (navObj.preprocess) {
+    if (navObj && navObj.preprocess) {
       this.executePreProcessLogic(navObj.preprocess, navObj.params);
     }
     this.locationRef.back();
@@ -50,7 +50,7 @@ export class NavigationService {
    * @param navObj - Instance of NavAux class
    */
   static goToState(navObj: NavAux) {
-    if (navObj.preprocess) {
+    if (navObj && navObj.preprocess) {
       this.executePreProcessLogic(navObj.preprocess, navObj.params);
     }
     if (typeof navObj.destinationPage === 'number') {
