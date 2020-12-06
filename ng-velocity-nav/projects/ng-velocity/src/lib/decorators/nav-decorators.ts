@@ -80,10 +80,10 @@ export function RouteBackAsync() {
                     let navObj;
                     if (typeof result === 'string') {
                         navObj = prepareNavObject(undefined, result);
-                        NavigationService.goToNextPage(navObj);
+                        NavigationService.goToPreviousPage(navObj);
                     } else {
                         navObj = prepareNavObject(result);
-                        NavigationService.goToNextPage(navObj);
+                        NavigationService.goToPreviousPage(navObj);
                     }
                 }, error => {
                     throw new Error(NavError.OBSERVABLE_REQUIRED);
@@ -127,6 +127,7 @@ export function RouteToStateAsync(state?: number) {
                         navObj = prepareNavObject(undefined, state);
                         NavigationService.goToState(navObj);
                     } else {
+                        result = result || state;
                         navObj = prepareNavObject(result);
                         NavigationService.goToState(navObj);
                     }
