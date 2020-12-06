@@ -1,6 +1,9 @@
 import { NavigationExtras } from '@angular/router';
 import { NavAux } from '../model/models';
 import { NavigationService } from '../navigation/navigation.service';
+import { take } from 'rxjs/operators';
+import { NavError } from '../model/enum';
+
 
 /**
  * Executes the original wrapped method and uses the return value along with the passed in arguments of the decorator
@@ -19,10 +22,41 @@ export function RouteNext(page?: string, navigationExtras?: NavigationExtras) {
     };
 }
 
+export function RouteNextAsync(page?: string, navigationExtras?: NavigationExtras) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const originalMethod = descriptor.value;
+        descriptor.value = function(...args: any[]) {
+
+            try {
+                originalMethod.apply(this, args).pipe(
+                    take(1)
+                ).subscribe( (result: string | NavAux) => {
+                    let navObj;
+                    if (typeof result === 'string') {
+                        page = result || page;
+                        navObj = prepareNavObject(undefined, page, navigationExtras);
+                        NavigationService.goToNextPage(navObj);
+                    } else {
+                        navObj = prepareNavObject(result);
+                        NavigationService.goToNextPage(navObj);
+                    }
+                }, error => {
+                    throw new Error(NavError.OBSERVABLE_REQUIRED);
+                });
+            } catch (error) {
+                throw new Error(NavError.OBSERVABLE_REQUIRED);
+            }
+
+
+
+        };
+    };
+}
+
 /**
  * Executes the original wrapped method and uses the return value to create an instance of the NavAux class. Then proceeds
  * to navigate backwards using popState.
- * 
+ *
  */
 export function RouteBack() {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -34,6 +68,33 @@ export function RouteBack() {
         };
     };
 }
+
+export function RouteBackAsync() {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const originalMethod = descriptor.value;
+        descriptor.value = function(...args: any[]) {
+            try {
+                originalMethod.apply(this, args).pipe(
+                    take(1)
+                ).subscribe(result => {
+                    let navObj;
+                    if (typeof result === 'string') {
+                        navObj = prepareNavObject(undefined, result);
+                        NavigationService.goToNextPage(navObj);
+                    } else {
+                        navObj = prepareNavObject(result);
+                        NavigationService.goToNextPage(navObj);
+                    }
+                }, error => {
+                    throw new Error(NavError.OBSERVABLE_REQUIRED);
+                });
+            } catch(error) {
+                throw new Error(NavError.OBSERVABLE_REQUIRED);
+            }
+        };
+    };
+}
+
 
 /**
  * Executes the original wrapped method and uses the return value along with the passed in arguments of the decorator
@@ -47,6 +108,34 @@ export function RouteToState(state?: number) {
             const result = originalMethod.apply(this, args);
             const navObj = prepareNavObject(result, state);
             NavigationService.goToState(navObj);
+        };
+    };
+}
+
+export function RouteToStateAsync(state?: number) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const originalMethod = descriptor.value;
+        descriptor.value = function(...args: any[]) {
+
+            try {
+                originalMethod.apply(this, args).pipe(
+                    take(1)
+                ).subscribe(result => {
+                    let navObj;
+                    if (typeof result === 'number') {
+                        state = result || state;
+                        navObj = prepareNavObject(undefined, state);
+                        NavigationService.goToState(navObj);
+                    } else {
+                        navObj = prepareNavObject(result);
+                        NavigationService.goToState(navObj);
+                    }
+                }, error => {
+                   // throw new Error(NavError.OBSERVABLE_REQUIRED);
+                });
+            } catch (error) {
+                throw new Error(NavError.OBSERVABLE_REQUIRED);
+            }
         };
     };
 }
