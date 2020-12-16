@@ -3,6 +3,7 @@ import { NavAux } from '../model/models';
 import { NavigationService } from '../navigation/navigation.service';
 import { take } from 'rxjs/operators';
 import { NavError } from '../model/enum';
+import { createErrorObj, isTypeNumber, isTypeString, logError } from '../shared/utility';
 
 
 /**
@@ -30,9 +31,9 @@ export function RouteNextAsync(page?: string, navigationExtras?: NavigationExtra
             try {
                 originalMethod.apply(this, args).pipe(
                     take(1)
-                ).subscribe( (result: string | NavAux) => {
+                ).subscribe( result => {
                     let navObj;
-                    if (typeof result === 'string') {
+                    if (isTypeString(result)) {
                         page = result || page;
                         navObj = prepareNavObject(undefined, page, navigationExtras);
                         NavigationService.goToNextPage(navObj);
@@ -41,14 +42,13 @@ export function RouteNextAsync(page?: string, navigationExtras?: NavigationExtra
                         NavigationService.goToNextPage(navObj);
                     }
                 }, error => {
-                    throw new Error(NavError.OBSERVABLE_REQUIRED);
+                    logError(createErrorObj(NavError.OBSERVABLE_STREAM));
+                    throw new Error(error);
                 });
             } catch (error) {
-                throw new Error(NavError.OBSERVABLE_REQUIRED);
+                logError(createErrorObj(NavError.OBSERVABLE_REQUIRED));
+                throw new Error(error);
             }
-
-
-
         };
     };
 }
@@ -78,7 +78,7 @@ export function RouteBackAsync() {
                     take(1)
                 ).subscribe(result => {
                     let navObj;
-                    if (typeof result === 'string') {
+                    if (isTypeString(result)) {
                         navObj = prepareNavObject(undefined, result);
                         NavigationService.goToPreviousPage(navObj);
                     } else {
@@ -86,10 +86,12 @@ export function RouteBackAsync() {
                         NavigationService.goToPreviousPage(navObj);
                     }
                 }, error => {
-                    throw new Error(NavError.OBSERVABLE_REQUIRED);
+                    logError(createErrorObj(NavError.OBSERVABLE_STREAM));
+                    throw new Error(error);
                 });
-            } catch(error) {
-                throw new Error(NavError.OBSERVABLE_REQUIRED);
+            } catch (error) {
+                logError(createErrorObj(NavError.OBSERVABLE_REQUIRED));
+                throw new Error(error);
             }
         };
     };
@@ -122,7 +124,7 @@ export function RouteToStateAsync(state?: number) {
                     take(1)
                 ).subscribe(result => {
                     let navObj;
-                    if (typeof result === 'number') {
+                    if (isTypeNumber(result)) {
                         state = result || state;
                         navObj = prepareNavObject(undefined, state);
                         NavigationService.goToState(navObj);
@@ -132,10 +134,12 @@ export function RouteToStateAsync(state?: number) {
                         NavigationService.goToState(navObj);
                     }
                 }, error => {
-                   // throw new Error(NavError.OBSERVABLE_REQUIRED);
+                    logError(createErrorObj(NavError.OBSERVABLE_STREAM));
+                    throw new Error(error);
                 });
             } catch (error) {
-                throw new Error(NavError.OBSERVABLE_REQUIRED);
+                logError(createErrorObj(NavError.OBSERVABLE_REQUIRED));
+                throw new Error(error);
             }
         };
     };
