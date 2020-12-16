@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 import { NavAux } from '../model/models';
+import { ProxyNavigationService } from './proxy-navigation.service';
+import { createErrorObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from '../shared/utility';
+import { NavError } from '../model/enum';
 
 // @dynamic//
 @Injectable({
@@ -11,51 +14,100 @@ export class NavigationService {
 
   private static routerRef: Router;
   private static locationRef: Location;
+  private static proxyNavRef: ProxyNavigationService;
 
-  constructor(private router: Router, private location: Location) {
+  constructor(private router: Router, private location: Location, private proxyNavigationService: ProxyNavigationService) {
     NavigationService.routerRef = this.router;
     NavigationService.locationRef = this.location;
+    NavigationService.proxyNavRef = this.proxyNavigationService;
 
    }
 
   /**
    * Performs action to call router navigate method and uses the destinationPage property of the NavAux instance
    * to route to next page. If preprocess property of NavAux is provided, it will be executed prior to route navigation.
+   * If a ProxyNavigationService token is present it will use the goToNextPage implementation of the ProxyNavigationService instead.
+   *
    * @param navObj - Instance of NavAux class
    */
-  static goToNextPage(navObj: NavAux): void {
-    if (navObj && navObj.preprocess) {
-      this.executePreProcessLogic(navObj.preprocess, navObj.params);
-    }
-    if (typeof navObj.destinationPage === 'string') {
-    this.routerRef.navigate([navObj.destinationPage], navObj.navigationExtra);
+  public static goToNextPage(navObj: NavAux): void {
+
+    if (isProxyNavigationProvided(this.proxyNavRef)) {
+      this.proxyNavRef.goToNextPage(navObj);
+    } else {
+      if (navObj && navObj.preprocess) {
+        this.executePreProcessLogic(navObj.preprocess, navObj.params);
+      }
+      if (isTypeString(navObj.destinationPage)) {
+        try {
+          this.routerRef.navigate([navObj.destinationPage], navObj.navigationExtra);
+        } catch (e) {
+          logError(createErrorObj(NavError.ROUTING + navObj.destinationPage));
+          throw e;
+        }
+      }
     }
   }
 
   /**
    * Performs action to call the back method of the Location service. If preprocess property of NavAux is provided, it will be executed
    * prior to the execution of the back method.
+   * If a ProxyNavigationService token is present it will use the goToPreviousPage implementation of the ProxyNavigationService instead.
    * @param navObj - Instance of NavAux class
    */
-  static goToPreviousPage(navObj: NavAux): void {
-    if (navObj && navObj.preprocess) {
-      this.executePreProcessLogic(navObj.preprocess, navObj.params);
+  public static goToPreviousPage(navObj: NavAux): void {
+    if (isProxyNavigationProvided(this.proxyNavRef)) {
+      this.proxyNavRef.goToPreviousPage(navObj);
+    } else {
+      if (navObj && navObj.preprocess) {
+        this.executePreProcessLogic(navObj.preprocess, navObj.params);
+      }
+      try {
+        this.locationRef.back();
+      } catch (e) {
+        logError(createErrorObj(NavError.LOCATION_BACK));
+        throw e;
+      }
     }
-    this.locationRef.back();
   }
 
    /**
    * Performs action to call the go method of the History object. If preprocess property of NavAux is provided, it will be executed
    * prior to the execution of the go method.
+   * If a ProxyNavigationService token is present it will use the goToState implementation of the ProxyNavigationService instead.
    * @param navObj - Instance of NavAux class
    */
-  static goToState(navObj: NavAux) {
-    if (navObj && navObj.preprocess) {
-      this.executePreProcessLogic(navObj.preprocess, navObj.params);
+  public static goToState(navObj: NavAux) {
+
+    if (isProxyNavigationProvided(this.proxyNavRef)) {
+      this.proxyNavRef.goToState(navObj);
+    } else {
+      if (navObj && navObj.preprocess) {
+        this.executePreProcessLogic(navObj.preprocess, navObj.params);
+      }
+      try {
+        if (isTypeNumber(navObj.destinationPage)) {
+          history.go(navObj.destinationPage as number);
+        }
+      } catch (e) {
+        logError(createErrorObj(NavError.STATE_HISTORY));
+        throw e;
+      }
     }
-    if (typeof navObj.destinationPage === 'number') {
-      history.go(navObj.destinationPage);
-    }
+  }
+
+  /**
+   * Returns a router object.
+   */
+  public static getRouterObj(): Router {
+    return this.routerRef;
+  }
+
+  /**
+   * Returns a location object.
+   */
+  public static getLocationObj(): Location {
+    return this.locationRef;
   }
 
   /**
@@ -64,8 +116,14 @@ export class NavigationService {
    * @param param - Parameter to be used for the function
    */
   private static executePreProcessLogic(preProcessFunc: Function, param): void {
-    if (preProcessFunc) {
-      param ? preProcessFunc(param) : preProcessFunc();
+    try {
+      if (preProcessFunc) {
+        param ? preProcessFunc(param) : preProcessFunc();
+      }
+    } catch (e) {
+      logError(createErrorObj(NavError.PREPROCRESS_FUNC + preProcessFunc.name));
+      throw e;
     }
+   
   }
 }
