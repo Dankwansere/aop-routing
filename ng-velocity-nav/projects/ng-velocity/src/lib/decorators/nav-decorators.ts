@@ -4,6 +4,7 @@ import { NavigationService } from '../navigation/navigation.service';
 import { take } from 'rxjs/operators';
 import { NavError } from '../model/enum';
 import { createErrorObj, isTypeNumber, isTypeString, logError } from '../shared/utility';
+import { prepareNavObject } from '../navigation/navigation-helper';
 
 
 /**
@@ -17,7 +18,13 @@ export function RouteNext(page?: string, navigationExtras?: NavigationExtras) {
         const originalMethod = descriptor.value;
         descriptor.value = function(...args: any[]) {
             const result = originalMethod.apply(this, args);
-            const navObj = prepareNavObject(result, page, navigationExtras);
+            let navObj;
+            if (isTypeString(result)) {
+                page = result || page;
+                navObj = prepareNavObject(undefined, page, navigationExtras);
+            } else {
+                navObj = prepareNavObject(result, page, navigationExtras);
+            }
             NavigationService.goToNextPage(navObj);
         };
     };
@@ -36,11 +43,10 @@ export function RouteNextAsync(page?: string, navigationExtras?: NavigationExtra
                     if (isTypeString(result)) {
                         page = result || page;
                         navObj = prepareNavObject(undefined, page, navigationExtras);
-                        NavigationService.goToNextPage(navObj);
                     } else {
                         navObj = prepareNavObject(result);
-                        NavigationService.goToNextPage(navObj);
                     }
+                    NavigationService.goToNextPage(navObj);
                 }, error => {
                     logError(createErrorObj(NavError.OBSERVABLE_STREAM));
                     throw new Error(error);
@@ -80,11 +86,10 @@ export function RouteBackAsync() {
                     let navObj;
                     if (isTypeString(result)) {
                         navObj = prepareNavObject(undefined, result);
-                        NavigationService.goToPreviousPage(navObj);
                     } else {
                         navObj = prepareNavObject(result);
-                        NavigationService.goToPreviousPage(navObj);
                     }
+                    NavigationService.goToPreviousPage(navObj);
                 }, error => {
                     logError(createErrorObj(NavError.OBSERVABLE_STREAM));
                     throw new Error(error);
@@ -127,12 +132,11 @@ export function RouteToStateAsync(state?: number) {
                     if (isTypeNumber(result)) {
                         state = result || state;
                         navObj = prepareNavObject(undefined, state);
-                        NavigationService.goToState(navObj);
                     } else {
                         result = result || state;
                         navObj = prepareNavObject(result);
-                        NavigationService.goToState(navObj);
                     }
+                    NavigationService.goToState(navObj);
                 }, error => {
                     logError(createErrorObj(NavError.OBSERVABLE_STREAM));
                     throw new Error(error);
@@ -145,58 +149,3 @@ export function RouteToStateAsync(state?: number) {
     };
 }
 
-/**
- * Calls the `createNavObj` or `updateNavObj` to create an instance of the NavAux class with the passed in parameters.
- * @param result - Result of executed function
- * @param page - Destination page
- * @param navigationExtras - Router navigation extra properties
- */
-function prepareNavObject(result: NavAux, page?: string | number, navigationExtras?: NavigationExtras): NavAux {
-    let navObj: NavAux;
-
-    if (page) {
-        navObj = createNavObj(page, navigationExtras);
-    }
-
-    if (result instanceof NavAux) {
-        navObj = updateNavObj(navObj, result);
-    }
-
-    return navObj;
-}
-
-/**
- * Creates an instance of the NavAux class by using the passed parameters.
- * @param page - Destination page
- * @param navigationExtras - Router extra properties
- */
-function createNavObj(page: string | number, navigationExtras: NavigationExtras): NavAux {
-    return new NavAux(page, navigationExtras);
-}
-
-/**
- * Will updated the existing instance of the NavAux to a new NavAux instance.
- * @param oldNavObj - Exsting instance of NavAux class
- * @param newNavObj - New Instance of NavAux class
- */
-function updateNavObj(oldNavObj: NavAux, newNavObj: NavAux): NavAux {
-
-    if (oldNavObj) {
-        if (newNavObj.destinationPage) {
-            oldNavObj.destinationPage = newNavObj.destinationPage;
-        }
-
-        if (newNavObj.navigationExtra) {
-            oldNavObj.navigationExtra = newNavObj.navigationExtra;
-        }
-
-        if (newNavObj.preprocess) {
-            oldNavObj.preprocess = newNavObj.preprocess;
-        }
-        if (newNavObj.params) {
-            oldNavObj.params = newNavObj.params;
-        }
-        return oldNavObj;
-    }
-    return newNavObj;
-}
