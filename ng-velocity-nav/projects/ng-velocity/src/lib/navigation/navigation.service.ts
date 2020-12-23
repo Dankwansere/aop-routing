@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { NavAux } from '../model/models';
+import { AopConfig, NavAux } from '../model/models';
 import { ProxyNavigationService } from './proxy-navigation.service';
 import { createErrorObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from '../shared/utility';
 import { NavError } from '../model/enum';
@@ -15,8 +15,13 @@ export class NavigationService {
   private static routerRef: Router;
   private static locationRef: Location;
   private static proxyNavRef: ProxyNavigationService;
+  public static useExperimentalFeatures: boolean;
 
-  constructor(private router: Router, private location: Location, private proxyNavigationService: ProxyNavigationService) {
+  constructor(private router: Router, private location: Location,
+  @Optional() private proxyNavigationService: ProxyNavigationService, @Optional() config?: AopConfig) {
+    if (config) {
+      NavigationService.useExperimentalFeatures = config.expirementNav;
+    }
     NavigationService.routerRef = this.router;
     NavigationService.locationRef = this.location;
     NavigationService.proxyNavRef = this.proxyNavigationService;
@@ -36,7 +41,7 @@ export class NavigationService {
       this.proxyNavRef.goToNextPage(navObj);
     } else {
       if (navObj && navObj.preprocess) {
-        this.executePreProcessLogic(navObj.preprocess, navObj.params);
+        this.executePreProcessLogic(navObj.preprocess, navObj.param);
       }
       if (isTypeString(navObj.destinationPage)) {
         try {
@@ -60,7 +65,7 @@ export class NavigationService {
       this.proxyNavRef.goToPreviousPage(navObj);
     } else {
       if (navObj && navObj.preprocess) {
-        this.executePreProcessLogic(navObj.preprocess, navObj.params);
+        this.executePreProcessLogic(navObj.preprocess, navObj.param);
       }
       try {
         this.locationRef.back();
@@ -83,7 +88,7 @@ export class NavigationService {
       this.proxyNavRef.goToState(navObj);
     } else {
       if (navObj && navObj.preprocess) {
-        this.executePreProcessLogic(navObj.preprocess, navObj.params);
+        this.executePreProcessLogic(navObj.preprocess, navObj.param);
       }
       try {
         if (isTypeNumber(navObj.destinationPage)) {
