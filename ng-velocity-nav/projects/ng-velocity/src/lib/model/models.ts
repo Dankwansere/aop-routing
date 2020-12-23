@@ -1,24 +1,21 @@
 import { NavigationExtras } from '@angular/router';
 import { Type } from '@angular/core';
 
-
-export interface NavigationResponse {
-    isSuccess: boolean;
-    isError: boolean;
-    errorMessage?: string;
-}
-
-export interface NavAuxiliary {
-    destinationPage?: string;
-    navigationExtra?: NavigationExtras;
-    preprocess?: Function;
-}
-
 export interface RouteTransform {
     path: string;
     component?: Type<any>;
     canActivateGuards?: [];
 }
+
+export interface AopNav {
+    routeTransform: RouteTransform;
+    navAux?: NavAux;
+}
+
+export class AopConfig {
+    expirementNav: boolean;
+}
+
 
 /**
  * Class to encapsulate extra navigation properties or methods that's required to execute the navigation process.
