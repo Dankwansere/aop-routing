@@ -1,5 +1,5 @@
 import { NavigationExtras } from '@angular/router';
-import { NavAux } from 'ng-velocity/lib/model/models';
+import { NavAux } from '../model/models';
 
 /**
  * Calls the `createNavObj` or `updateNavObj` to create an instance of the NavAux class with the passed in parameters.
@@ -49,8 +49,8 @@ export function updateNavObj(oldNavObj: NavAux, newNavObj: NavAux): NavAux {
         if (newNavObj.preprocess) {
             oldNavObj.preprocess = newNavObj.preprocess;
         }
-        if (newNavObj.params) {
-            oldNavObj.params = newNavObj.params;
+        if (newNavObj.param) {
+            oldNavObj.param = newNavObj.param;
         }
         return oldNavObj;
     }
