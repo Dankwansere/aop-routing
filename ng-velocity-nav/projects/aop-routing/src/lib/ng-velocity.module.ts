@@ -5,10 +5,10 @@ import { AopConfig } from './model/models';
   imports: [
   ],
 })
-export class NgVelocityModule {
+export class AopRoutingModule {
   static forRoot(config: AopConfig): ModuleWithProviders {
     return {
-      ngModule: NgVelocityModule,
+      ngModule: AopRoutingModule,
       providers: [{provide: AopConfig, useValue: config}]
     };
   }
