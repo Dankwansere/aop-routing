@@ -1,8 +1,11 @@
 import { Type } from '@angular/core';
-import { Routes, Router, Route, CanActivate } from '@angular/router';
-import { cloneDeep } from 'lodash/cloneDeep';
+import { Routes, Router, Route } from '@angular/router';
+import cloneDeep from 'lodash/cloneDeep';
+import { RouteTransform } from '../model/models';
 
+// @dynamic//
 export class RouteHelper {
+    public static useExperimentalFeatures: boolean;
     private static pristineRouteConfig: Routes;
 
     /**
@@ -12,17 +15,17 @@ export class RouteHelper {
      * @param component - Component to be attached
      * @param guards - list of canActivate guards
      */
-    public static modifyRouteTable(router: Router, path: string, component: Type<any>, guards: any[]): void {
+    public static modifyRouteTable(router: Router, routeTransform: RouteTransform): void {
         this.pristineRouteConfig = cloneDeep(router.config);
-        const pathObj = this.getRoutePathObj(router, path);
+        const pathObj = this.getRoutePathObj(router, routeTransform.path);
         if (!pathObj) {
-            this.addNewRoutePath(router, path, component, guards);
+            this.addNewRoutePath(router, routeTransform.path, routeTransform.component, routeTransform.canActivateGuards);
         } else {
-            if (component) {
-                this.changeRouteComponent(router, path, component);
+            if (routeTransform.component) {
+                this.changeRouteComponent(router, routeTransform.path, routeTransform.component);
             }
-            if (guards) {
-                this.updateCanActivateGuards(router, path, guards);
+            if (routeTransform.canActivateGuards) {
+                this.updateCanActivateGuards(router, routeTransform.path, routeTransform.canActivateGuards);
             }
         }
     }
@@ -38,7 +41,6 @@ export class RouteHelper {
 
         // Throw error if component not provided **********
 
-        this.pristineRouteConfig = cloneDeep(router);
         const routeInput: Route = {path, component, canActivate};
         router.config.push(routeInput);
     }
