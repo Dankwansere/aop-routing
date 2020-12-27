@@ -1,5 +1,4 @@
 import { NavigationExtras } from '@angular/router';
-import { NavAux } from '../model/models';
 import { NavigationService } from '../navigation/navigation.service';
 import { take } from 'rxjs/operators';
 import { NavError } from '../model/enum';

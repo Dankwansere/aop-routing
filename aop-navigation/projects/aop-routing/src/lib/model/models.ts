@@ -9,7 +9,7 @@ export interface RouteTransform {
 
 export interface AopNav {
     routeTransform: RouteTransform;
-    navAux?: NavAux;
+    navigationExtra?: NavigationExtras | undefined;
 }
 
 export class AopConfig {
