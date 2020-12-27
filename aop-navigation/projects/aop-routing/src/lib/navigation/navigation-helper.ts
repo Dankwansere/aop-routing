@@ -1,5 +1,6 @@
 import { NavigationExtras } from '@angular/router';
 import { NavAux } from '../model/models';
+import { isAopNavObj } from '../shared/utility';
 
 /**
  * Calls the `createNavObj` or `updateNavObj` to create an instance of the NavAux class with the passed in parameters.
@@ -7,8 +8,15 @@ import { NavAux } from '../model/models';
  * @param page - Destination page
  * @param navigationExtras - Router navigation extra properties
  */
-export function prepareNavObject(result: NavAux, page?: string | number, navigationExtras?: NavigationExtras): NavAux {
+export function prepareNavObject(result: any, page?: string | number, navigationExtras?: NavigationExtras): any {
     let navObj: NavAux;
+
+    if (isAopNavObj(result)) {
+        return {
+            navAux: createNavObj(result.routeTransform.path, result.navigationExtra),
+            routeTransform: result.routeTransform
+        };
+    }
 
     if (page) {
         navObj = createNavObj(page, navigationExtras);
