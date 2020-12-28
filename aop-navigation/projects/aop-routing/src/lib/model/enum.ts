@@ -6,5 +6,5 @@ export enum NavError {
     ROUTING = 'Could not route to ',
     LOCATION_BACK = 'Failed to popState navigate',
     STATE_HISTORY = 'Failed to load specific page from session history',
-    EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM = 'Cannot use RouteTransform object with experimental flag turned off'
+    EXPERIMENTAL_FEATURE_ROUTE_TRANSFORM = 'Cannot use RouteTransform object with experimental flag turned off'
 }
