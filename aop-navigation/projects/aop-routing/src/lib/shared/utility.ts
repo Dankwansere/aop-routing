@@ -1,3 +1,4 @@
+import { NavError } from '../model/enum';
 import { BaseNavigation } from '../model/models';
 import { ProxyNavigationService } from '../navigation/proxy-navigation.service';
 import { RouteHelper } from '../navigation/router-helper';
@@ -17,6 +18,9 @@ export function isProxyNavigationProvided(proxyNavRef: ProxyNavigationService): 
 export function isAopNavObj(navObj: object): boolean {
     if (RouteHelper.useExperimentalFeatures) {
         return 'routeTransform' in navObj;
+    } else if (!RouteHelper.useExperimentalFeatures && 'routeTransform' in navObj) {
+        logError(createErrorObj(NavError.EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM));
+        throw NavError.EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM;
     }
     return false;
 }

@@ -47,22 +47,12 @@ export class NavigationService {
 
       if (isAopNavObj(navObj)) {
         RouteHelper.modifyRouteTable(this.routerRef, navObj.routeTransform);
-      }
-
-      const destinationPage = navObj.destinationPage || navObj.routeTransform.path;
-
-      if (isTypeString(destinationPage)) {
-        try {
-          this.routerRef.navigate([destinationPage], navObj.navigationExtra);
-        } catch (e) {
-          logError(createErrorObj(NavError.ROUTING + destinationPage));
-          throw e;
-        }
-      }
-
-      if (isAopNavObj(navObj)) {
+        this.executeImperativeNavigation(navObj);
         RouteHelper.resetRouterConfig(this.routerRef);
+      } else {
+        this.executeImperativeNavigation(navObj);
       }
+
     }
   }
 
@@ -125,6 +115,19 @@ export class NavigationService {
    */
   public static getLocationObj(): Location {
     return this.locationRef;
+  }
+
+  private static executeImperativeNavigation(navObj: any): void {
+    const destinationPage = navObj.destinationPage || navObj.routeTransform.path;
+
+    if (isTypeString(destinationPage)) {
+      try {
+        this.routerRef.navigate([destinationPage], navObj.navigationExtra);
+      } catch (e) {
+        logError(createErrorObj(NavError.ROUTING + destinationPage));
+        throw e;
+      }
+    }
   }
 
   /**
