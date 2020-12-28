@@ -1,36 +1,33 @@
 import { NavigationExtras } from '@angular/router';
+import { Type } from '@angular/core';
 
-export interface NavigationResponse {
-    isSuccess: boolean;
-    isError: boolean;
-    errorMessage?: string;
+export interface RouteTransform {
+    path: string;
+    component?: Type<any>;
+    canActivateGuards?: [];
 }
 
-export interface NavAuxiliary {
-    destinationPage?: string;
-    navigationExtra?: NavigationExtras;
-    preprocess?: Function;
+export interface AopNav {
+    routeTransform: RouteTransform;
+    navigationExtra?: NavigationExtras | undefined;
 }
+
+export class AopConfig {
+    expirementNav: boolean;
+}
+
 
 /**
  * Class to encapsulate extra navigation properties or methods that's required to execute the navigation process.
  */
 export class NavAux {
-    destinationPage: string | number;
-    navigationExtra: NavigationExtras;
-    preprocess: Function;
-    params: any;
-
-    constructor(destinationPage?: string | number, navigationExtra?: NavigationExtras | undefined, preprocess?: Function, param?: any) {
-        this.destinationPage = destinationPage;
-        this.navigationExtra = navigationExtra;
-        this.preprocess = preprocess;
-        this.params = param;
+    constructor(public destinationPage?: string | number,
+         public navigationExtra?: NavigationExtras | undefined,
+         public preprocess?: Function, public param?: any) {
     }
 }
 
 export abstract class BaseNavigation {
-
 
     /**
      * Skeleton methods to be overrided and provide custom navigation logic.

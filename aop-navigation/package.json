@@ -1,5 +1,5 @@
 {
-  "name": "ng-velocity-nav",
+  "name": "aop-navigation",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~8.1.0",
     "@angular/router": "~8.1.0",
     "core-js": "^2.5.4",
+    "lodash": "^4.17.20",
     "node-sass": "^4.13.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
