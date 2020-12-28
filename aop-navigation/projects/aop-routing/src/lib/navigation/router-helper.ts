@@ -1,7 +1,9 @@
 import { Type } from '@angular/core';
 import { Routes, Router, Route } from '@angular/router';
 import cloneDeep from 'lodash/cloneDeep';
+import { NavError } from '../model/enum';
 import { RouteTransform } from '../model/models';
+import { createErrorObj, logError } from '../shared/utility';
 
 // @dynamic//
 export class RouteHelper {
@@ -38,11 +40,13 @@ export class RouteHelper {
      * @param canActivate - List of guards
      */
     private static addNewRoutePath(router: Router, path: string, component: Type<any>, canActivate = []): void {
-
-        // Throw error if component not provided **********
-
-        const routeInput: Route = {path, component, canActivate};
-        router.config.push(routeInput);
+        if (component) {
+            const routeInput: Route = {path, component, canActivate};
+            router.config.push(routeInput);
+        } else {
+            logError(createErrorObj(NavError.EXPERIMENTAL_FEATURE_COMPONENT_MISSING));
+            throw NavError.EXPERIMENTAL_FEATURE_COMPONENT_MISSING;
+        }
     }
 
     /**
