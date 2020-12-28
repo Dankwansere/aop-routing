@@ -9,11 +9,12 @@ export { RouteToState } from './lib/decorators/nav-decorators';
 export { RouteNextAsync } from './lib/decorators/nav-decorators';
 export { RouteBackAsync } from './lib/decorators/nav-decorators';
 export { RouteToStateAsync } from './lib/decorators/nav-decorators';
-export { NavAux } from './lib/model/nav-aux';
-export { AopNavigator } from './lib/model/models';
+export { NavAux } from './lib/model/models';
 export { AopConfig } from './lib/model/models';
 export { AopNav } from './lib/model/models';
 export { RouteTransform } from './lib/model/models';
-export { AopNavigationService } from './lib/navigation/aop-navigation.service';
-export { AopBaseNavigation } from './lib/model/abstract/aop-base-navigation';
-export { AopProxyNavigationService } from './lib/navigation/aop-proxy-navigation.service';
+export { NavigationService } from './lib/navigation/navigation.service';
+export { BaseNavigation } from './lib/model/models';
+export { ProxyNavigationService } from './lib/navigation/proxy-navigation.service';
+
+

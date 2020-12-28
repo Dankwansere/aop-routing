@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { NavAux } from '../model/models';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 /**
  * Dummy service to allow custom implemenation of navigation logic.
  * Should be overriden by a custom navigation class inheriting BaseNavigation Class.

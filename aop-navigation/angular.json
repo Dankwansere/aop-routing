@@ -19,10 +19,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/aop-routing/src/test.ts",
+            "main": "projectsaop-routing/src/test.ts",
             "tsConfig": "projects/aop-routing/tsconfig.spec.json",
-            "karmaConfig": "projects/aop-routing/karma.conf.js",
-            "codeCoverage": true
+            "karmaConfig": "projects/aop-routing/karma.conf.js"
           }
         },
         "lint": {

@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { NavAux } from '../model/models';
+import { AopConfig, NavAux } from '../model/models';
 import { ProxyNavigationService } from './proxy-navigation.service';
-import { createErrorObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from '../shared/utility';
+import { createErrorObj, isAopNavObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from '../shared/utility';
 import { NavError } from '../model/enum';
+import { RouteHelper } from './router-helper';
 
 // @dynamic//
 @Injectable({
@@ -16,7 +17,11 @@ export class NavigationService {
   private static locationRef: Location;
   private static proxyNavRef: ProxyNavigationService;
 
-  constructor(private router: Router, private location: Location, private proxyNavigationService: ProxyNavigationService) {
+  constructor(private router: Router, private location: Location,
+  @Optional() private proxyNavigationService: ProxyNavigationService, @Optional() config?: AopConfig) {
+    if (config) {
+      RouteHelper.useExperimentalFeatures = config.expirementNav;
+    }
     NavigationService.routerRef = this.router;
     NavigationService.locationRef = this.location;
     NavigationService.proxyNavRef = this.proxyNavigationService;
@@ -30,22 +35,24 @@ export class NavigationService {
    *
    * @param navObj - Instance of NavAux class
    */
-  public static goToNextPage(navObj: NavAux): void {
+  public static goToNextPage(navObj: any): void {
 
     if (isProxyNavigationProvided(this.proxyNavRef)) {
       this.proxyNavRef.goToNextPage(navObj);
     } else {
+
       if (navObj && navObj.preprocess) {
-        this.executePreProcessLogic(navObj.preprocess, navObj.params);
+        this.executePreProcessLogic(navObj.preprocess, navObj.param);
       }
-      if (isTypeString(navObj.destinationPage)) {
-        try {
-          this.routerRef.navigate([navObj.destinationPage], navObj.navigationExtra);
-        } catch (e) {
-          logError(createErrorObj(NavError.ROUTING + navObj.destinationPage));
-          throw e;
-        }
+
+      if (isAopNavObj(navObj)) {
+        RouteHelper.modifyRouteTable(this.routerRef, navObj.routeTransform);
+        this.executeImperativeNavigation(navObj);
+        RouteHelper.resetRouterConfig(this.routerRef);
+      } else {
+        this.executeImperativeNavigation(navObj);
       }
+
     }
   }
 
@@ -60,7 +67,7 @@ export class NavigationService {
       this.proxyNavRef.goToPreviousPage(navObj);
     } else {
       if (navObj && navObj.preprocess) {
-        this.executePreProcessLogic(navObj.preprocess, navObj.params);
+        this.executePreProcessLogic(navObj.preprocess, navObj.param);
       }
       try {
         this.locationRef.back();
@@ -83,7 +90,7 @@ export class NavigationService {
       this.proxyNavRef.goToState(navObj);
     } else {
       if (navObj && navObj.preprocess) {
-        this.executePreProcessLogic(navObj.preprocess, navObj.params);
+        this.executePreProcessLogic(navObj.preprocess, navObj.param);
       }
       try {
         if (isTypeNumber(navObj.destinationPage)) {
@@ -108,6 +115,19 @@ export class NavigationService {
    */
   public static getLocationObj(): Location {
     return this.locationRef;
+  }
+
+  private static executeImperativeNavigation(navObj: any): void {
+    const destinationPage = navObj.destinationPage || navObj.routeTransform.path;
+
+    if (isTypeString(destinationPage)) {
+      try {
+        this.routerRef.navigate([destinationPage], navObj.navigationExtra);
+      } catch (e) {
+        logError(createErrorObj(NavError.ROUTING + destinationPage));
+        throw e;
+      }
+    }
   }
 
   /**
