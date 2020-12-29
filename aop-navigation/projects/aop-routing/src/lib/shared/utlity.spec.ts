@@ -68,15 +68,33 @@ describe('Utility', () => {
        expect(result).toBe(true);
    });
 
-   it(`should return undefined if useExperimentalFeatures flag of RouteHelper
+   it(`should return false if useExperimentalFeatures flag of RouteHelper
    is false and passed object contains a routeTransform property`, () => {
-      RouteHelper.useExperimentalFeatures = false;
+    spyOn(console, 'error');
+    RouteHelper.useExperimentalFeatures = false;
       const mockObj = {
           routeTransform: ''
       };
-      const result = isAopNavObj(mockObj);
-      expect(result).toBe(false);
+      expect(function () {
+        isAopNavObj(mockObj);
+      }).toThrow();
   });
+ });
+
+ describe('#createErrorObj', () => {
+    it('should return return an error object with passed string arg', () => {
+        const errMsg = 'aop-unit-test-error';
+        const result = createErrorObj(errMsg);
+        expect(result.message).toBe(errMsg);
+    });
+ });
+
+ describe('#logError', () => {
+    it('should return return an error object with passed string arg', () => {
+       spyOn(console, 'error');
+       logError(createErrorObj('aop-unit-test-error'));
+       expect(console.error).toHaveBeenCalled();
+    });
  });
 
 
