@@ -16,11 +16,9 @@ export function isProxyNavigationProvided(proxyNavRef: ProxyNavigationService): 
 }
 
 export function isAopNavObj(navObj: object): boolean {
-    console.log('Log here');
     if (RouteHelper.useExperimentalFeatures) {
         return 'routeTransform' in navObj;
     } else if (!RouteHelper.useExperimentalFeatures && 'routeTransform' in navObj) {
-        console.log('log 2');
         logError(createErrorObj(NavError.EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM));
         throw NavError.EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM;
     }
