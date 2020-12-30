@@ -8,3 +8,5 @@ export class GoodProxy extends BaseNavigation {
 }
 
 export class BadProxy {}
+
+export function mockFunction() {}
