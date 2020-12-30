@@ -10,3 +10,10 @@ export class GoodProxy extends BaseNavigation {
 export class BadProxy {}
 
 export function mockFunction() {}
+
+export function mockPartialRouter(url: string): any {
+    return {
+        url : '/' + url,
+        navigate: jasmine.createSpy('navigate')
+    };
+}
