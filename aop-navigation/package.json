@@ -51,7 +51,7 @@
     "@angular/language-service": "~7.1.0",
     "@compodoc/compodoc": "^1.1.11",
     "@microsoft/tsdoc": "^0.12.21",
-    "@types/jasmine": "~2.8.8",
+    "@types/jasmine": "~2.8.9",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "@types/jest": "^25.2.1",
