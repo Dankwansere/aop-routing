@@ -14,6 +14,8 @@ export function mockFunction() {}
 export function mockPartialRouter(url: string): any {
     return {
         url : '/' + url,
-        navigate: jasmine.createSpy('navigate')
+        navigate: jasmine.createSpy('navigate'),
+        config: [{path: '123', component: 'test-comp', canActivate: ['guard1']},
+        {path: 'abc', component: 'test-comp'}]
     };
 }
