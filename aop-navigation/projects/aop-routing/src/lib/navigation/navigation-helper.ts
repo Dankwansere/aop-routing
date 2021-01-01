@@ -22,7 +22,7 @@ export function prepareNavObject(result: any, page?: string | number, navigation
         navObj = createNavObj(page, navigationExtras);
     }
 
-    if (result instanceof NavAux) {
+    if (typeof result === 'object') {
         navObj = updateNavObj(navObj, result);
     }
 

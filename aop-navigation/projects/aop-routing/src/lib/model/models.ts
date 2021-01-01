@@ -11,11 +11,16 @@ export interface AopNav {
     routeTransform: RouteTransform;
     navigationExtra?: NavigationExtras | undefined;
 }
+export interface AopNavigator {
+    destinationPage?: string | number;
+    navigationExtra?: NavigationExtras | undefined;
+    preprocess?: Function;
+    param?: any;
+}
 
 export class AopConfig {
     expirementNav: boolean;
 }
-
 
 /**
  * Class to encapsulate extra navigation properties or methods that's required to execute the navigation process.
