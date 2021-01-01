@@ -6,6 +6,7 @@ import { ProxyNavigationService } from './proxy-navigation.service';
 import { createErrorObj, isAopNavObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from '../shared/utility';
 import { NavError } from '../model/enum';
 import { RouteHelper } from './router-helper';
+import { Transient } from '../shared/transient';
 
 // @dynamic//
 @Injectable({
@@ -20,7 +21,7 @@ export class NavigationService {
   constructor(private router: Router, private location: Location,
   @Optional() private proxyNavigationService?: ProxyNavigationService, @Optional() config?: AopConfig) {
     if (config) {
-      RouteHelper.useExperimentalFeatures = config.expirementNav;
+      Transient.useExperimentalFeatures = config.expirementNav;
     }
     NavigationService.routerRef = this.router;
     NavigationService.locationRef = this.location;
