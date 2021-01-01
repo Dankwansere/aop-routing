@@ -4,6 +4,7 @@ import { RouteHelper } from '../navigation/router-helper';
 import { createErrorObj, isAopNavObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from './utility';
 import * as utilityFunctions from './utility';
 import { Transient } from './transient';
+
 describe('Utility', () => {
     beforeEach(() => {});
 
