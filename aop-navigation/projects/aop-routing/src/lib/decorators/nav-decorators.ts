@@ -82,12 +82,7 @@ export function RouteBackAsync() {
                 originalMethod.apply(this, args).pipe(
                     take(1)
                 ).subscribe(result => {
-                    let navObj;
-                    if (isTypeString(result)) {
-                        navObj = prepareNavObject(undefined, result);
-                    } else {
-                        navObj = prepareNavObject(result);
-                    }
+                    const navObj = prepareNavObject(result);
                     NavigationService.goToPreviousPage(navObj);
                 }, error => {
                     logError(createErrorObj(NavError.OBSERVABLE_STREAM));

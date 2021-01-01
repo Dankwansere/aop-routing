@@ -5,10 +5,26 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --code-coverage --watch=false",
+    "jTest": "jest --coverage",
+    "jTest-watch": "jest --watch",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "npx compodoc -p tsconfig.json projects"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/projects/aop-routing/src/setupJest.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/projects/aop-routing/src/test.ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "<rootDir>/projects/aop-routing/tsconfig.spec.json"
+      }
+    }
   },
   "private": true,
   "dependencies": {
@@ -33,11 +49,14 @@
     "@angular/cli": "~7.1.3",
     "@angular/compiler-cli": "~7.1.0",
     "@angular/language-service": "~7.1.0",
-    "@types/node": "~8.9.4",
-    "@types/jasmine": "~2.8.8",
-    "@types/jasminewd2": "~2.0.3",
     "@compodoc/compodoc": "^1.1.11",
     "@microsoft/tsdoc": "^0.12.21",
+    "@types/jasmine": "~2.8.9",
+    "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
+    "@types/jest": "^25.2.1",
+    "jest": "^25.3.0",
+    "jest-preset-angular": "^8.1.3",
     "codelyzer": "~4.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
@@ -46,6 +65,8 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-spec-reporter": "0.0.32",
     "ng-packagr": "^4.2.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",

@@ -39,7 +39,7 @@ export class RouteHelper {
      * @param component  - Component to be attached.
      * @param canActivate - List of guards
      */
-    private static addNewRoutePath(router: Router, path: string, component: Type<any>, canActivate = []): void {
+    public static addNewRoutePath(router: Router, path: string, component: Type<any>, canActivate = []): void {
         if (component) {
             const routeInput: Route = {path, component, canActivate};
             router.config.push(routeInput);
@@ -55,7 +55,7 @@ export class RouteHelper {
      * @param path - Path name
      * @param component - Component to be attached.
      */
-    private static changeRouteComponent(router: Router, path: string, component: Type<any>): void {
+    public static changeRouteComponent(router: Router, path: string, component: Type<any>): void {
         this.getRoutePathObj(router, path).component = component;
     }
 
@@ -66,13 +66,11 @@ export class RouteHelper {
      * @param path - Path name
      * @param guard - list of guards
      */
-    private static updateCanActivateGuards(router: Router, path: string, guard: any[]): void {
-        if (guard) {
-            if (guard.length > 0) {
-                this.addCanActivateGuard(router, path, guard);
-            } else if (guard.length === 0) {
-                this.disableCanActivateGuards(router, path);
-            }
+    public static updateCanActivateGuards(router: Router, path: string, guard: any[]): void {
+        if (guard && guard.length > 0) {
+            this.addCanActivateGuard(router, path, guard);
+        } else if (guard.length === 0) {
+            this.disableCanActivateGuards(router, path);
         }
     }
 
@@ -81,7 +79,7 @@ export class RouteHelper {
      * @param router - Router object
      * @param path - Path name
      */
-    private static disableCanActivateGuards(router: Router, path: string): void {
+    public static disableCanActivateGuards(router: Router, path: string): void {
         this.getRoutePathObj(router, path).canActivate = [];
     }
 
@@ -92,7 +90,7 @@ export class RouteHelper {
      * @param path - Path name
      * @param guard - guards array
      */
-    private static addCanActivateGuard(router: Router, path: string, guard: any[]): void {
+    public static addCanActivateGuard(router: Router, path: string, guard: any[]): void {
        if (!this.getRoutePathObj(router, path).canActivate) {
         this.getRoutePathObj(router, path).canActivate = guard;
        } else {
@@ -106,7 +104,7 @@ export class RouteHelper {
      * @param router - Router object
      * @param path - path name
      */
-    private static getRoutePathObj(router: Router, path: string): Route {
+    public static getRoutePathObj(router: Router, path: string): Route {
         return router.config.find(element => element.path === path);
     }
 

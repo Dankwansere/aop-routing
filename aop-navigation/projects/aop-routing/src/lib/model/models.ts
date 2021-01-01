@@ -4,7 +4,7 @@ import { Type } from '@angular/core';
 export interface RouteTransform {
     path: string;
     component?: Type<any>;
-    canActivateGuards?: [];
+    canActivateGuards?: any[];
 }
 
 export interface AopNav {

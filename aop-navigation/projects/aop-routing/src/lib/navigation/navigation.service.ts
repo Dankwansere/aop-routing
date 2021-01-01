@@ -18,7 +18,7 @@ export class NavigationService {
   private static proxyNavRef: ProxyNavigationService;
 
   constructor(private router: Router, private location: Location,
-  @Optional() private proxyNavigationService: ProxyNavigationService, @Optional() config?: AopConfig) {
+  @Optional() private proxyNavigationService?: ProxyNavigationService, @Optional() config?: AopConfig) {
     if (config) {
       RouteHelper.useExperimentalFeatures = config.expirementNav;
     }
@@ -36,7 +36,6 @@ export class NavigationService {
    * @param navObj - Instance of NavAux class
    */
   public static goToNextPage(navObj: any): void {
-
     if (isProxyNavigationProvided(this.proxyNavRef)) {
       this.proxyNavRef.goToNextPage(navObj);
     } else {
@@ -85,7 +84,6 @@ export class NavigationService {
    * @param navObj - Instance of NavAux class
    */
   public static goToState(navObj: NavAux) {
-
     if (isProxyNavigationProvided(this.proxyNavRef)) {
       this.proxyNavRef.goToState(navObj);
     } else {
@@ -117,7 +115,7 @@ export class NavigationService {
     return this.locationRef;
   }
 
-  private static executeImperativeNavigation(navObj: any): void {
+  public static executeImperativeNavigation(navObj: any): void {
     const destinationPage = navObj.destinationPage || navObj.routeTransform.path;
 
     if (isTypeString(destinationPage)) {
@@ -135,7 +133,7 @@ export class NavigationService {
    * @param preProcessFunc - Function reference
    * @param param - Parameter to be used for the function
    */
-  private static executePreProcessLogic(preProcessFunc: Function, param): void {
+  public static executePreProcessLogic(preProcessFunc: Function, param): void {
     try {
       if (preProcessFunc) {
         param ? preProcessFunc(param) : preProcessFunc();
