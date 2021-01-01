@@ -3,6 +3,7 @@ import { NavError } from '../model/enum';
 import { RouteHelper } from '../navigation/router-helper';
 import { createErrorObj, isAopNavObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from './utility';
 import * as utilityFunctions from './utility';
+import { Transient } from './transient';
 describe('Utility', () => {
     beforeEach(() => {});
 
@@ -46,21 +47,21 @@ describe('Utility', () => {
 
  describe('#isAopNavObj', () => {
     it('should return false if useExperimentalFeatures flag of RouteHelper is false', () => {
-      RouteHelper.useExperimentalFeatures = false;
+      Transient.useExperimentalFeatures = false;
       const result = isAopNavObj({});
       expect(result).toBe(false);
     });
 
     it(`should return false if useExperimentalFeatures flag of RouteHelper
      is true and passed object does not have a routeTransform property`, () => {
-        RouteHelper.useExperimentalFeatures = true;
+        Transient.useExperimentalFeatures = true;
         const result = isAopNavObj({});
         expect(result).toBe(false);
     });
 
     it(`should return true if useExperimentalFeatures flag of RouteHelper
     is true and passed object contains a routeTransform property`, () => {
-       RouteHelper.useExperimentalFeatures = true;
+        Transient.useExperimentalFeatures = true;
        const mockObj = {
            routeTransform: ''
        }
@@ -71,7 +72,7 @@ describe('Utility', () => {
    it(`should return false if useExperimentalFeatures flag of RouteHelper
    is false and passed object contains a routeTransform property`, () => {
     spyOn(console, 'error');
-    RouteHelper.useExperimentalFeatures = false;
+    Transient.useExperimentalFeatures = false;
       const mockObj = {
           routeTransform: ''
       };

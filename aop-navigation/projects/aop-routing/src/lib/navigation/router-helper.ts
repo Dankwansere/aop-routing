@@ -7,7 +7,6 @@ import { createErrorObj, logError } from '../shared/utility';
 
 // @dynamic//
 export class RouteHelper {
-    public static useExperimentalFeatures: boolean;
     private static pristineRouteConfig: Routes;
 
     /**

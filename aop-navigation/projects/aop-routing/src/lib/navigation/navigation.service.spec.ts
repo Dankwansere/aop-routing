@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { GoodProxy, mockFunction } from '../../mock/test-data';
 import { AopConfig, NavAux, RouteTransform } from '../model/models';
+import { Transient } from '../shared/transient';
 import { prepareNavObject } from './navigation-helper';
 import { NavigationService } from './navigation.service';
 import { ProxyNavigationService } from './proxy-navigation.service';
@@ -15,16 +16,16 @@ describe('NavigationService', () => {
         mockRouter = jasmine.createSpyObj('mockRouter', ['navigate']);
         mockLocation = jasmine.createSpyObj('mockLocation', ['back']);
         navigationService = new NavigationService(mockRouter, mockLocation);
-        RouteHelper.useExperimentalFeatures = false;
+        Transient.useExperimentalFeatures = false;
     });
 
     describe('#constructor', () => {
         it(`should set useExperimentalFeatures property of RouterHelper to passed in config`, () => {
             const config = new AopConfig();
             config.expirementNav = true;
-            spyOn(RouteHelper, 'useExperimentalFeatures');
+            spyOn(Transient, 'useExperimentalFeatures');
             navigationService = new NavigationService(mockRouter, mockLocation, undefined, config);
-            expect(RouteHelper.useExperimentalFeatures).toBe(true);
+            expect(Transient.useExperimentalFeatures).toBe(true);
         });
     });
 
@@ -47,7 +48,7 @@ describe('NavigationService', () => {
         });
 
         it(`should call modifyRouteTable method of RouterHelper if isAopNavObj method returns true`, () => {
-            RouteHelper.useExperimentalFeatures = true;
+            Transient.useExperimentalFeatures = true;
             const routeTransform: RouteTransform = {
                 path: 'Test3',
                 component: '' as any
@@ -60,7 +61,7 @@ describe('NavigationService', () => {
        });
 
        it(`should call executeImperativeNavigation method if isAopNavObj method returns true`, () => {
-        RouteHelper.useExperimentalFeatures = true;
+        Transient.useExperimentalFeatures = true;
         const routeTransform: RouteTransform = {
             path: 'Test3',
             component: '' as any
@@ -74,7 +75,7 @@ describe('NavigationService', () => {
         });
 
         it(`should call resetRouterConfig method of RouterHelper if isAopNavObj method returns true`, () => {
-            RouteHelper.useExperimentalFeatures = true;
+            Transient.useExperimentalFeatures = true;
             const routeTransform: RouteTransform = {
                 path: 'Test3',
                 component: '' as any
