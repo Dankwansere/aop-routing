@@ -41,8 +41,9 @@ export function RouteNextAsync() {
                     let navObj;
                     if (isTypeString(result)) {
                         navObj = prepareNavObject(undefined, result);
+
                     } else {
-                        navObj = prepareNavObject(result);
+                        navObj = prepareNavObject(result, page, navigationExtras);
                     }
                     AopNavigationService.goToNextPage(navObj);
                 }, error => {
@@ -126,6 +127,7 @@ export function RouteToStateAsync() {
                         navObj = prepareNavObject(undefined, result);
                     } else {
                         navObj = prepareNavObject(result);
+
                     }
                     AopNavigationService.goToState(navObj);
                 }, error => {

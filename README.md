@@ -69,8 +69,16 @@ return obj;
 The **RouteNextAsync** decorator can be used on a function which performs **rxjs** [aysnchronous](https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22) operations. The function should return an observable. The **RouteNextAsync** will subscribe to the passed observable and automatically perform imperative navigation.
 
 The method should return an **Observable<string>** or **AopNavigator object** which the decorator will use to perform imperative navigation
-   
- 
+=======
+1. Below example will route to page1 after the asynchronous operation inside the method is complete.
+```
+@RouteNextAsync('page1')
+public testMethod() {
+ return of(...some async operations).pipe(
+ ...rxjs operators...)
+}
+```
+
  1. Below example will make the decorator subscribe to the **Observable<string>** value returned from the targetted method and use that value to perform
  imperative routing.
  
@@ -166,6 +174,7 @@ public testMethod() {
 The **RouteToStateAsync** decorator can be used on a function which performs **rxjs** [aysnchronous](https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22) operations. The function should return an observable. The **RouteToStateAsync** will subscribe to the passed observable and automatically perform popstate navigation traversion of the history state.
 
 1. Below example will subscribe to the targetted method and use the returned value to traverse 2 states backwards of the browser history state after end of targetted method.
+
 
  ```
 @RouteToStateAsync()
