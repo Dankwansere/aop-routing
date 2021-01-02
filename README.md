@@ -1,5 +1,14 @@
 # Aop-Routing
 Provides the capability to perform [Imperative and Popstate navigation](https://medium.com/analytics-vidhya/angular-routing-imperative-vs-popstate-7d254b495c54) operations in Angular through the ease of typescript decorators, **without the need to import the Angular Router object**
+  
+**List of features include**
+* Imperative navigation using decorators
+* PopState navigation using decorators
+* Custom navigation logic to override default navigation logigc
+* Dynamically add new path to routing table at runtime
+* Dynamically change the component of a path at runtime
+* Dynamically add/remove CanActivate guards at runtime 
+
 
 # Installation
 Aop-Routing runs on NodeJs and is available as an NPM package
@@ -59,16 +68,7 @@ return obj;
 #### RouteNextAsync
 The **RouteNextAsync** decorator can be used on a function which performs **rxjs** [aysnchronous](https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22) operations. The function should return an observable. The **RouteNextAsync** will subscribe to the passed observable and automatically perform imperative navigation.
 
-1. Below example will route to page1 after the asynchronous operation inside the method is complete.
-```
-@RouteNextAsync('page1')
-public testMethod() {
- return of(...some async operations).pipe(
- ...rxjs operators...)
-}
-```
-
-Should the navigation be dependent on dynamic value from the targetted method, then the method can return an **Observable<string>** or **AopNavigator object** which the decorator will use to perform imperative navigation
+The method should return an **Observable<string>** or **AopNavigator object** which the decorator will use to perform imperative navigation
    
  
  1. Below example will make the decorator subscribe to the **Observable<string>** value returned from the targetted method and use that value to perform
@@ -165,18 +165,7 @@ public testMethod() {
 #### RouteToStateAsync
 The **RouteToStateAsync** decorator can be used on a function which performs **rxjs** [aysnchronous](https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22) operations. The function should return an observable. The **RouteToStateAsync** will subscribe to the passed observable and automatically perform popstate navigation traversion of the history state.
 
-1. Below example will subscribe to the targetted method will traverse 2 states backwards of the browser history state after end of targetted method
-
-```
-@RouteToStateAsync(-2)
-public testMethod() {
-...some logic...
- return of(...some async operations).pipe(
- ...rxjs operators...);
-}
-```
-
-2. Below example will subscribe to the targetted method and use the returned value to traverse 2 states backwards of the browser history state after end of targetted method.
+1. Below example will subscribe to the targetted method and use the returned value to traverse 2 states backwards of the browser history state after end of targetted method.
 
  ```
 @RouteToStateAsync()
@@ -190,7 +179,7 @@ public testMethod(): Observable<string> {
 }
  ```
  
-3. Below example will make the decorator subscribe to the **AopNavigator object** returned from the targetted method and use the **destinationPage** property value to perform
+2. Below example will make the decorator subscribe to the **AopNavigator object** returned from the targetted method and use the **destinationPage** property value to perform
 popstate navigation traversal of the browser history state.
 
  ```
