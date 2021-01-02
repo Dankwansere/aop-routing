@@ -67,7 +67,7 @@ export class RouteHelper {
      */
     public static updateCanActivateGuards(router: Router, path: string, guard: any[]): void {
         if (guard && guard.length > 0) {
-            this.addCanActivateGuard(router, path, guard);
+            this.addOrRemoveCanActivateGuard(router, path, guard);
         } else if (guard.length === 0) {
             this.disableCanActivateGuards(router, path);
         }
@@ -89,13 +89,12 @@ export class RouteHelper {
      * @param path - Path name
      * @param guard - guards array
      */
-    public static addCanActivateGuard(router: Router, path: string, guard: any[]): void {
+    public static addOrRemoveCanActivateGuard(router: Router, path: string, guard: any[]): void {
        if (!this.getRoutePathObj(router, path).canActivate) {
         this.getRoutePathObj(router, path).canActivate = guard;
        } else {
         const clonedActivatedGuards = this.isCanActivateGuardExist(router, path, guard);
-        let updatedCanActivatedGuards = clonedActivatedGuards;
-        updatedCanActivatedGuards = [...this.getRoutePathObj(router, path).canActivate, ...guard];
+        const updatedCanActivatedGuards = [...clonedActivatedGuards, ...guard];
         this.getRoutePathObj(router, path).canActivate = updatedCanActivatedGuards;
        }
     }
@@ -113,16 +112,21 @@ export class RouteHelper {
         const clonedCanActivateGuards: any[] = cloneDeep(this.getRoutePathObj(router, path).canActivate);
         const removeGuardsIndex: any[] = [];
         // Check if guards exist
-        for (const element in guards) {
-            if (element) {
-              const guardIndex = clonedCanActivateGuards.findIndex(x => x === element);
-              if (guardIndex !== -1) {
+        for (let element = 0; element < guards.length; element++) {
+            const guardIndex = clonedCanActivateGuards.findIndex(x => {
+                 return x === guards[element];
+            });
+            if (guardIndex !== -1) {
                 removeGuardsIndex.push(guardIndex);
               }
-            }
         }
 
-        // Remove existing guards based on the passed values
+        // Trim passed guards array and only leave guard to added
+        for (let element = 0; element < removeGuardsIndex.length; element++) {
+            guards.splice(removeGuardsIndex[element], 1);
+        }
+
+        // Remove existing guards from cloned guards based on the passed values
         for (let elementToRemove = 0; elementToRemove < removeGuardsIndex.length; elementToRemove++) {
             clonedCanActivateGuards.splice(removeGuardsIndex[elementToRemove], 1);
         }

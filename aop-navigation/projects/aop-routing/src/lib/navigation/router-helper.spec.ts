@@ -108,9 +108,9 @@ describe('RouteHelper', () => {
 
      describe('#updateCanActivateGuards', () => {
         it('should call addCanActivateGuard method if array of guards were provided', () => {
-            spyOn(RouteHelper, 'addCanActivateGuard');
+            spyOn(RouteHelper, 'addOrRemoveCanActivateGuard');
             RouteHelper.updateCanActivateGuards(mockRouter, '123', ['guard1']);
-            expect(RouteHelper.addCanActivateGuard).toHaveBeenCalledWith(mockRouter, '123', ['guard1']);
+            expect(RouteHelper.addOrRemoveCanActivateGuard).toHaveBeenCalledWith(mockRouter, '123', ['guard1']);
         });
         it('should call disableCanActivateGuards method if an empty array was provided', () => {
             spyOn(RouteHelper, 'disableCanActivateGuards');
@@ -120,9 +120,9 @@ describe('RouteHelper', () => {
         it('should do nothing if guard length is lesser than 0', () => {
             const fakeGuard = {path: '123'} as any;
             spyOn(RouteHelper, 'disableCanActivateGuards');
-            spyOn(RouteHelper, 'addCanActivateGuard');
+            spyOn(RouteHelper, 'addOrRemoveCanActivateGuard');
             RouteHelper.updateCanActivateGuards(mockRouter, '123', fakeGuard);
-            expect(RouteHelper.addCanActivateGuard).not.toHaveBeenCalled();
+            expect(RouteHelper.addOrRemoveCanActivateGuard).not.toHaveBeenCalled();
             expect(RouteHelper.disableCanActivateGuards).not.toHaveBeenCalled();
         });
      });
@@ -147,7 +147,7 @@ describe('RouteHelper', () => {
                 path: 'abc',
                 component: 'component-abc' as any
             };
-            RouteHelper.addCanActivateGuard(router, routeTransform.path, ['guard2']);
+            RouteHelper.addOrRemoveCanActivateGuard(router, routeTransform.path, ['guard2']);
             const result = RouteHelper.getRoutePathObj(router, 'abc');
             expect(result.canActivate[0]).toBe('guard2');
         });
@@ -158,7 +158,7 @@ describe('RouteHelper', () => {
                 path: '123',
                 component: 'component-abc' as any
             };
-            RouteHelper.addCanActivateGuard(router, routeTransform.path, ['guard2']);
+            RouteHelper.addOrRemoveCanActivateGuard(router, routeTransform.path, ['guard2']);
             const result = RouteHelper.getRoutePathObj(router, '123');
             expect(result.canActivate[0]).toBe('guard1');
             expect(result.canActivate[1]).toBe('guard2');

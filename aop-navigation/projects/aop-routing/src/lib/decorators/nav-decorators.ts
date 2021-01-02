@@ -29,7 +29,7 @@ export function RouteNext(page?: string, navigationExtras?: NavigationExtras) {
     };
 }
 
-export function RouteNextAsync(page?: string, navigationExtras?: NavigationExtras) {
+export function RouteNextAsync() {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value;
         descriptor.value = function(...args: any[]) {
@@ -39,9 +39,9 @@ export function RouteNextAsync(page?: string, navigationExtras?: NavigationExtra
                     take(1)
                 ).subscribe( result => {
                     let navObj;
-                    if (isTypeString(result) || page) {
-                        page = result || page;
-                        navObj = prepareNavObject(undefined, page, navigationExtras);
+                    if (isTypeString(result)) {
+                        navObj = prepareNavObject(undefined, result);
+
                     } else {
                         navObj = prepareNavObject(result, page, navigationExtras);
                     }
@@ -113,7 +113,7 @@ export function RouteToState(state?: number) {
     };
 }
 
-export function RouteToStateAsync(state?: number) {
+export function RouteToStateAsync() {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value;
         descriptor.value = function(...args: any[]) {
@@ -124,11 +124,10 @@ export function RouteToStateAsync(state?: number) {
                 ).subscribe(result => {
                     let navObj;
                     if (isTypeNumber(result)) {
-                        state = result || state;
-                        navObj = prepareNavObject(undefined, state);
+                        navObj = prepareNavObject(undefined, result);
                     } else {
-                        result = result || state;
-                        navObj = prepareNavObject(result, state);
+                        navObj = prepareNavObject(result);
+
                     }
                     AopNavigationService.goToState(navObj);
                 }, error => {
