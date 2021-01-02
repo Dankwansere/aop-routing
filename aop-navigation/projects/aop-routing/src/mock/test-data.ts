@@ -33,7 +33,7 @@ export class MockDecoratorClass {
         return new NavAux('aop-nav');
     }
 
-    @RouteNextAsync('testPage')
+    @RouteNextAsync()
     mockNextMethodAsync(): Observable<string> {
         return of('hello world');
     }
@@ -73,7 +73,7 @@ export class MockDecoratorClass {
         return of(new NavAux(-1));
     }
 
-    @RouteToStateAsync(-1)
+    @RouteToStateAsync()
     mockRouteToStateMethodAsync(): Observable<number> {
        return of(-1);
     }
