@@ -253,3 +253,114 @@ export class SampleClass extends AopBaseNavigation {
 4. The above steps will override the default decorator navigation logic, which means the decorators will now use the custom methods of the newly created class **SampleClass**
 
 ---
+
+### Experiemental Features
+AopRouting can dynamically modify the routing table during runtime of an Angular application.
+```diff
+- Note the below features are experimental and should be used with caution
+```
+  
+To enable the experimental features of the AopRouting library, pass an object with **experimentalNav** property set to true to the **AopRoutingModule** forRoot method to the top level/root module:
+  
+```
+@NgModule({
+  ...
+  imports: [
+    ...
+    AopRoutingModule.forRoot({expirementNav: true})
+  ],
+  ...
+})
+```
+  
+The below Routing table will be used to demonstrate the features and examples:
+```
+const routes: Routes = [
+  {path: 'page1', component: Page1Component},
+  {path: 'page2', component: Page2Component }
+];
+```
+
+#### Adding new Path to the Routing Table at runtime.
+A new Path can be dynamically created and to the Routing table and also navigated to at runtime . Suppose we want to add **page3** that should route to **Page3Component**
+
+1. Create a routeTransform object and set the **path** and **component* property:
+```
+ const routeTransform: RouteTransform = {
+    path: 'page3',
+    component: Page3Component
+ };
+```
+
+2. In the RouteNext or RouteNextAsync deocrator of the targetted function, return an **AopNav** object with the routeTransform property set.
+```
+@RouteNext()
+public testMethod() {
+  const routeTransform: RouteTransform = {
+    path: 'page3',
+    component: Page3Component
+ };
+  return {routeTransform}
+}
+```
+
+#### Changing component of a Path at runtime
+A component that has been statically set to a path can be changed and navigated to at runtime. Suppose we want to change **page1** to route to **Page3Component** instead:
+
+1. Create a routeTransform object and set the **path** and **component* property:
+```
+ const routeTransform: RouteTransform = {
+    path: 'page1',
+    component: Page3Component
+ };
+```
+
+2. In the RouteNext or RouteNextAsync deocrator of the targetted function, return an **AopNav** object with the routeTransform property set:
+```
+@RouteNext()
+public testMethod() {
+  const routeTransform: RouteTransform = {
+    path: 'page1',
+    component: Page3Component
+ };
+  return {routeTransform}
+}
+```
+#### Add CanActivate guard(s) at runtime
+CanActivate guards can be added to a path at runtime. Suppose we want to add a guard **page1** path
+
+1. Create a routeTransform object and set the **path1** and **canActivateGuards** property by providing the name(s) of CanActivate guard(s) to be added:
+```
+ const routeTransform: RouteTransform = {
+    path: 'page1',
+    canActivateGuards: [guard1, guard2]
+ };
+```
+
+2. In the RouteNext or RouteNextAsync deocrator of the targetted function, return an **AopNav** object with the routeTransform property set:
+```
+@RouteNext()
+public testMethod() {
+  const routeTransform: RouteTransform = {
+    path: 'page1',
+    canActivateGuards: [guard1, guard2]
+ };
+  return {routeTransform}
+}
+```
+
+#### Removing guard(s) from a path
+To remove CanActivate guards from a path at runtime, it's the same steps as adding guards. If the guards provided exist in the routing table, they will be removed.
+
+#### Removing all CanActivate guards associated to a path.
+To remove all CanActivate guards associated to a path is the same steps as adding a guard. Instead the canActivateGuards property should be set to an empty array.
+  
+@RouteNext()
+public testMethod() {
+  const routeTransform: RouteTransform = {
+    path: 'page1',
+    canActivateGuards: []
+ };
+  return {routeTransform}
+}
+```
