@@ -1,7 +1,6 @@
 import { NavError } from '../model/enum';
-import { BaseNavigation } from '../model/models';
-import { ProxyNavigationService } from '../navigation/proxy-navigation.service';
-import { RouteHelper } from '../navigation/router-helper';
+import { AopBaseNavigation } from '../model/models';
+import { AopProxyNavigationService } from '../navigation/aop-proxy-navigation.service';
 import { Transient } from './transient';
 
 export function isTypeString(value: any): boolean {
@@ -12,8 +11,8 @@ export function isTypeNumber(value: any): boolean {
     return typeof value === 'number';
 }
 
-export function isProxyNavigationProvided(proxyNavRef: ProxyNavigationService): boolean {
-    return proxyNavRef && proxyNavRef instanceof BaseNavigation;
+export function isProxyNavigationProvided(proxyNavRef: AopProxyNavigationService): boolean {
+    return proxyNavRef && proxyNavRef instanceof AopBaseNavigation;
 }
 
 export function isAopNavObj(navObj: object): boolean {

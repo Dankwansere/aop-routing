@@ -3,7 +3,6 @@ import { mockFunction } from '../../mock/test-data';
 import { NavAux, RouteTransform } from '../model/models';
 import { Transient } from '../shared/transient';
 import { createNavObj, prepareNavObject, updateNavObj } from './navigation-helper';
-import { RouteHelper } from './router-helper';
 
 describe('#navigation-helper', () => {
     const page = 'aopPage';

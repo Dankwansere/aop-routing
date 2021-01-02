@@ -1,5 +1,5 @@
 import { NavAux } from '../model/models';
-import { ProxyNavigationService } from './proxy-navigation.service';
+import { AopProxyNavigationService } from './aop-proxy-navigation.service';
 
 
 describe('ProxyNavigationService', () => {
@@ -10,7 +10,7 @@ describe('ProxyNavigationService', () => {
 
       describe('#goToNextPage', () => {
         it('should call goToNextPage', () => {
-            const proxy = new ProxyNavigationService();
+            const proxy = new AopProxyNavigationService();
             spyOn(proxy, 'goToNextPage');
             proxy.goToNextPage(navAux);
             expect(proxy.goToNextPage).toHaveBeenCalledWith(navAux);
@@ -19,7 +19,7 @@ describe('ProxyNavigationService', () => {
 
     describe('#goToPreviousPage', () => {
         it('should call goToPreviousPage', () => {
-            const proxy = new ProxyNavigationService();
+            const proxy = new AopProxyNavigationService();
             spyOn(proxy, 'goToPreviousPage');
             proxy.goToPreviousPage(navAux);
             expect(proxy.goToPreviousPage).toHaveBeenCalledWith(navAux);
@@ -28,7 +28,7 @@ describe('ProxyNavigationService', () => {
 
     describe('#goToState', () => {
         it('should call goToState', () => {
-            const proxy = new ProxyNavigationService();
+            const proxy = new AopProxyNavigationService();
             spyOn(proxy, 'goToState');
             proxy.goToState(navAux);
             expect(proxy.goToState).toHaveBeenCalledWith(navAux);

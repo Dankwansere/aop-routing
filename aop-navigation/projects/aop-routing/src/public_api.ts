@@ -14,8 +14,8 @@ export { AopNavigator } from './lib/model/models';
 export { AopConfig } from './lib/model/models';
 export { AopNav } from './lib/model/models';
 export { RouteTransform } from './lib/model/models';
-export { NavigationService } from './lib/navigation/navigation.service';
-export { BaseNavigation } from './lib/model/models';
-export { ProxyNavigationService } from './lib/navigation/proxy-navigation.service';
+export { AopNavigationService } from './lib/navigation/aop-navigation.service';
+export { AopBaseNavigation } from './lib/model/models';
+export { AopProxyNavigationService } from './lib/navigation/aop-proxy-navigation.service';
 
 

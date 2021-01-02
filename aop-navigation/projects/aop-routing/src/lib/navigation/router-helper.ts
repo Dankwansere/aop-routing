@@ -93,7 +93,9 @@ export class RouteHelper {
        if (!this.getRoutePathObj(router, path).canActivate) {
         this.getRoutePathObj(router, path).canActivate = guard;
        } else {
-        const updatedCanActivatedGuards = [...this.getRoutePathObj(router, path).canActivate, ...guard];
+        const clonedActivatedGuards = this.isCanActivateGuardExist(router, path, guard);
+        let updatedCanActivatedGuards = clonedActivatedGuards;
+        updatedCanActivatedGuards = [...this.getRoutePathObj(router, path).canActivate, ...guard];
         this.getRoutePathObj(router, path).canActivate = updatedCanActivatedGuards;
        }
     }
@@ -105,6 +107,26 @@ export class RouteHelper {
      */
     public static getRoutePathObj(router: Router, path: string): Route {
         return router.config.find(element => element.path === path);
+    }
+
+    public static isCanActivateGuardExist(router: Router, path: string, guards: any[]): any[] {
+        const clonedCanActivateGuards: any[] = cloneDeep(this.getRoutePathObj(router, path).canActivate);
+        const removeGuardsIndex: any[] = [];
+        // Check if guards exist
+        for (const element in guards) {
+            if (element) {
+              const guardIndex = clonedCanActivateGuards.findIndex(x => x === element);
+              if (guardIndex !== -1) {
+                removeGuardsIndex.push(guardIndex);
+              }
+            }
+        }
+
+        // Remove existing guards based on the passed values
+        for (let elementToRemove = 0; elementToRemove < removeGuardsIndex.length; elementToRemove++) {
+            clonedCanActivateGuards.splice(removeGuardsIndex[elementToRemove], 1);
+        }
+        return clonedCanActivateGuards;
     }
 
     /**

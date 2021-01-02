@@ -1,21 +1,20 @@
-import { Router } from '@angular/router';
 import { GoodProxy, mockFunction } from '../../mock/test-data';
 import { AopConfig, NavAux, RouteTransform } from '../model/models';
 import { Transient } from '../shared/transient';
 import { prepareNavObject } from './navigation-helper';
-import { NavigationService } from './navigation.service';
-import { ProxyNavigationService } from './proxy-navigation.service';
+import { AopNavigationService } from './aop-navigation.service';
+import { AopProxyNavigationService } from './aop-proxy-navigation.service';
 import { RouteHelper } from './router-helper';
 
 
 describe('NavigationService', () => {
-    let mockRouter, mockLocation, proxyNavigationService, navigationService: NavigationService;
+    let mockRouter, mockLocation, proxyNavigationService, navigationService: AopNavigationService;
 
     beforeEach(() => {
-        proxyNavigationService = new ProxyNavigationService();
+        proxyNavigationService = new AopProxyNavigationService();
         mockRouter = jasmine.createSpyObj('mockRouter', ['navigate']);
         mockLocation = jasmine.createSpyObj('mockLocation', ['back']);
-        navigationService = new NavigationService(mockRouter, mockLocation);
+        navigationService = new AopNavigationService(mockRouter, mockLocation);
         Transient.useExperimentalFeatures = false;
     });
 
@@ -24,7 +23,7 @@ describe('NavigationService', () => {
             const config = new AopConfig();
             config.expirementNav = true;
             spyOn(Transient, 'useExperimentalFeatures');
-            navigationService = new NavigationService(mockRouter, mockLocation, undefined, config);
+            navigationService = new AopNavigationService(mockRouter, mockLocation, undefined, config);
             expect(Transient.useExperimentalFeatures).toBe(true);
         });
     });
@@ -32,19 +31,19 @@ describe('NavigationService', () => {
     describe('#goToNextPage', () => {
         it('should call goToNextPage method of passed in proxy service', () => {
             const goodProxy = new GoodProxy();
-            const navigationService2 = new NavigationService(mockRouter, mockLocation, goodProxy);
+            const navigationService2 = new AopNavigationService(mockRouter, mockLocation, goodProxy);
             const navAux = new NavAux('aop-page');
             spyOn(goodProxy, 'goToNextPage');
-            NavigationService.goToNextPage(navAux);
+            AopNavigationService.goToNextPage(navAux);
             expect(goodProxy.goToNextPage).toHaveBeenCalled();
         });
 
         it(`should call executePreProcessLogic method if passed
          NavAux instance preprocess property is set`, () => {
             const navAux = new NavAux('aop-page', undefined, mockFunction);
-            spyOn(NavigationService, 'executePreProcessLogic');
-            NavigationService.goToNextPage(navAux);
-            expect(NavigationService.executePreProcessLogic).toHaveBeenCalledWith(navAux.preprocess, navAux.param);
+            spyOn(AopNavigationService, 'executePreProcessLogic');
+            AopNavigationService.goToNextPage(navAux);
+            expect(AopNavigationService.executePreProcessLogic).toHaveBeenCalledWith(navAux.preprocess, navAux.param);
         });
 
         it(`should call modifyRouteTable method of RouterHelper if isAopNavObj method returns true`, () => {
@@ -56,7 +55,7 @@ describe('NavigationService', () => {
             const mockObj = {routeTransform};
             spyOn(RouteHelper, 'modifyRouteTable');
             const result = prepareNavObject(mockObj);
-            NavigationService.goToNextPage(result);
+            AopNavigationService.goToNextPage(result);
             expect(RouteHelper.modifyRouteTable).toHaveBeenCalledWith(mockRouter, result.routeTransform);
        });
 
@@ -68,10 +67,10 @@ describe('NavigationService', () => {
            };
         const mockObj = {routeTransform};
         spyOn(RouteHelper, 'modifyRouteTable');
-        spyOn(NavigationService, 'executeImperativeNavigation');
+        spyOn(AopNavigationService, 'executeImperativeNavigation');
         const result = prepareNavObject(mockObj);
-        NavigationService.goToNextPage(result);
-        expect(NavigationService.executeImperativeNavigation).toHaveBeenCalledWith(result);
+        AopNavigationService.goToNextPage(result);
+        expect(AopNavigationService.executeImperativeNavigation).toHaveBeenCalledWith(result);
         });
 
         it(`should call resetRouterConfig method of RouterHelper if isAopNavObj method returns true`, () => {
@@ -82,18 +81,18 @@ describe('NavigationService', () => {
                };
             const mockObj = {routeTransform};
             spyOn(RouteHelper, 'modifyRouteTable');
-            spyOn(NavigationService, 'executeImperativeNavigation');
+            spyOn(AopNavigationService, 'executeImperativeNavigation');
             spyOn(RouteHelper, 'resetRouterConfig');
             const result = prepareNavObject(mockObj);
-            NavigationService.goToNextPage(result);
+            AopNavigationService.goToNextPage(result);
             expect(RouteHelper.resetRouterConfig).toHaveBeenCalledWith(mockRouter);
         });
 
         it(`should call executeImperativeNavigation method if isAopNavObj method returns false`, () => {
-            spyOn(NavigationService, 'executeImperativeNavigation');
+            spyOn(AopNavigationService, 'executeImperativeNavigation');
             const result = prepareNavObject(undefined, 'aop-navigation');
-            NavigationService.goToNextPage(result);
-            expect(NavigationService.executeImperativeNavigation).toHaveBeenCalledWith(result);
+            AopNavigationService.goToNextPage(result);
+            expect(AopNavigationService.executeImperativeNavigation).toHaveBeenCalledWith(result);
         });
 
      });
@@ -101,23 +100,23 @@ describe('NavigationService', () => {
     describe('#goToPreviousPage', () => {
         it('should call goToPreviousPage method of passed in proxy service', () => {
             const goodProxy = new GoodProxy();
-            const navigationService2 = new NavigationService(mockRouter, mockLocation, goodProxy);
+            const navigationService2 = new AopNavigationService(mockRouter, mockLocation, goodProxy);
             const navAux = new NavAux('aop-page');
             spyOn(goodProxy, 'goToPreviousPage');
-            NavigationService.goToPreviousPage(navAux);
+            AopNavigationService.goToPreviousPage(navAux);
             expect(goodProxy.goToPreviousPage).toHaveBeenCalledWith(navAux);
         });
 
         it(`should call executePreProcessLogic method if passed NavAux instance preprocess property is set`, () => {
            const navAux = new NavAux('aop-page', undefined, mockFunction);
-           spyOn(NavigationService, 'executePreProcessLogic');
-           NavigationService.goToPreviousPage(navAux);
-           expect(NavigationService.executePreProcessLogic).toHaveBeenCalledWith(navAux.preprocess, navAux.param);
+           spyOn(AopNavigationService, 'executePreProcessLogic');
+           AopNavigationService.goToPreviousPage(navAux);
+           expect(AopNavigationService.executePreProcessLogic).toHaveBeenCalledWith(navAux.preprocess, navAux.param);
        });
 
         it(`should call back method of location obj`, () => {
         const navAux = new NavAux();
-        NavigationService.goToPreviousPage(navAux);
+        AopNavigationService.goToPreviousPage(navAux);
         expect(mockLocation.back).toHaveBeenCalled();
          });
 
@@ -126,7 +125,7 @@ describe('NavigationService', () => {
         const navAux = new NavAux();
         spyOn(console, 'error');
         expect(function () {
-            NavigationService.goToPreviousPage(navAux);
+            AopNavigationService.goToPreviousPage(navAux);
           }).toThrow();
         });
     });
@@ -134,24 +133,24 @@ describe('NavigationService', () => {
     describe('#goToState', () => {
         it('should call goToPreviousPage method of passed in proxy service', () => {
             const goodProxy = new GoodProxy();
-            const navigationService2 = new NavigationService(mockRouter, mockLocation, goodProxy);
+            const navigationService2 = new AopNavigationService(mockRouter, mockLocation, goodProxy);
             const navAux = new NavAux(-1);
             spyOn(goodProxy, 'goToState');
-            NavigationService.goToState(navAux);
+            AopNavigationService.goToState(navAux);
             expect(goodProxy.goToState).toHaveBeenCalledWith(navAux);
         });
 
         it(`should call executePreProcessLogic method if passed NavAux instance preprocess property is set`, () => {
            const navAux = new NavAux(-1, undefined, mockFunction);
-           spyOn(NavigationService, 'executePreProcessLogic');
-           NavigationService.goToState(navAux);
-           expect(NavigationService.executePreProcessLogic).toHaveBeenCalledWith(navAux.preprocess, navAux.param);
+           spyOn(AopNavigationService, 'executePreProcessLogic');
+           AopNavigationService.goToState(navAux);
+           expect(AopNavigationService.executePreProcessLogic).toHaveBeenCalledWith(navAux.preprocess, navAux.param);
        });
 
        it(`should call go method of history obj, if destinationPage property of navAux is a number`, () => {
         const navAux = new NavAux(-1);
         spyOn(history, 'go');
-        NavigationService.goToState(navAux);
+        AopNavigationService.goToState(navAux);
         expect(history.go).toHaveBeenCalledWith(navAux.destinationPage);
         });
 
@@ -160,21 +159,21 @@ describe('NavigationService', () => {
             const navAux = new NavAux(-1);
             spyOn(console, 'error');
             expect(function () {
-                NavigationService.goToState(navAux);
+                AopNavigationService.goToState(navAux);
             }).toThrow();
         });
     });
 
     describe('#getRouterObj', () => {
         it('should return a router object', () => {
-            const routerRes = NavigationService.getRouterObj();
+            const routerRes = AopNavigationService.getRouterObj();
             expect(routerRes).toBe(mockRouter);
         });
     });
 
     describe('#getLocationObj', () => {
         it('should return a location object', () => {
-            const locationRes = NavigationService.getLocationObj();
+            const locationRes = AopNavigationService.getLocationObj();
             expect(locationRes).toBe(mockLocation);
         });
     });
@@ -182,7 +181,7 @@ describe('NavigationService', () => {
     describe('#executeImperativeNavigation', () => {
         it('should call navigate method of Router object', () => {
            const navAux = new NavAux('aop-nav');
-           NavigationService.executeImperativeNavigation(navAux);
+           AopNavigationService.executeImperativeNavigation(navAux);
            expect(mockRouter.navigate).toHaveBeenCalledWith([navAux.destinationPage], navAux.navigationExtra);
         });
 
@@ -191,7 +190,7 @@ describe('NavigationService', () => {
             spyOn(console, 'error');
             mockRouter.navigate.and.throwError('unit-test-error');
             expect(function () {
-                NavigationService.executeImperativeNavigation(navAux);
+                AopNavigationService.executeImperativeNavigation(navAux);
             }).toThrow();
          });
     });
@@ -200,14 +199,14 @@ describe('NavigationService', () => {
         it('should call passed in function argument', () => {
             const navAux = new NavAux('aop-page', undefined, mockFunction);
             spyOn(navAux, 'preprocess');
-            NavigationService.executePreProcessLogic(navAux.preprocess, undefined);
+            AopNavigationService.executePreProcessLogic(navAux.preprocess, undefined);
             expect(navAux.preprocess).toHaveBeenCalled();
         });
 
         it('should call passed in function argument with the passed param argument', () => {
             const navAux = new NavAux('aop-page', undefined, mockFunction, 'aop-test');
             spyOn(navAux, 'preprocess');
-            NavigationService.executePreProcessLogic(navAux.preprocess, navAux.param);
+            AopNavigationService.executePreProcessLogic(navAux.preprocess, navAux.param);
             expect(navAux.preprocess).toHaveBeenCalledWith(navAux.param);
         });
 
@@ -216,7 +215,7 @@ describe('NavigationService', () => {
             spyOn(console, 'error');
             spyOn(navAux, 'preprocess').and.throwError('unit-test-error');
             expect(function () {
-                NavigationService.executePreProcessLogic(navAux.preprocess, navAux.param);
+                AopNavigationService.executePreProcessLogic(navAux.preprocess, navAux.param);
             }).toThrow();
         });
     });

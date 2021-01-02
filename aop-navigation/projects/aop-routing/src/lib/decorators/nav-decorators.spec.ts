@@ -1,8 +1,5 @@
-import { NavigationService } from '../navigation/navigation.service';
-import { RouteNext } from '../decorators/nav-decorators';
-import { FunctionCall } from '@angular/compiler';
+import { AopNavigationService } from '../navigation/aop-navigation.service';
 import { MockDecoratorClass } from '../../mock/test-data';
-import { Observable, of, throwError } from 'rxjs';
 
 describe('Nav Decorators', () => {
     beforeEach(() => {
@@ -11,33 +8,33 @@ describe('Nav Decorators', () => {
 
       describe('#RouteNext', () => {
         it('should call goToNextPage of NavigationService if string arg is provided to RouteNext', () => {
-            spyOn(NavigationService, 'goToNextPage');
+            spyOn(AopNavigationService, 'goToNextPage');
             const mockClass = new MockDecoratorClass();
             mockClass.mockNextMethod();
-            expect(NavigationService.goToNextPage).toHaveBeenCalled();
+            expect(AopNavigationService.goToNextPage).toHaveBeenCalled();
         });
 
         it('should call goToNextPage of NavigationService if function returns a NavAux instance ', () => {
-            spyOn(NavigationService, 'goToNextPage');
+            spyOn(AopNavigationService, 'goToNextPage');
             const mockClass = new MockDecoratorClass();
             mockClass.mockNextObjMethod();
-            expect(NavigationService.goToNextPage).toHaveBeenCalled();
+            expect(AopNavigationService.goToNextPage).toHaveBeenCalled();
         });
      });
 
      describe('#RouteNextAsync', () => {
         it('should subscribe to returned function observable and call goToNextPage of NavigationService', () => {
-            spyOn(NavigationService, 'goToNextPage');
+            spyOn(AopNavigationService, 'goToNextPage');
             const mockClass = new MockDecoratorClass();
             mockClass.mockNextMethodAsync();
-            expect(NavigationService.goToNextPage).toHaveBeenCalled();
+            expect(AopNavigationService.goToNextPage).toHaveBeenCalled();
         });
 
         it('should call goToNextPage by using the returned of value of the function through subscription ', () => {
-            spyOn(NavigationService, 'goToNextPage');
+            spyOn(AopNavigationService, 'goToNextPage');
             const mockClass = new MockDecoratorClass();
             mockClass.mockNextObjMethodAsync();
-            expect(NavigationService.goToNextPage).toHaveBeenCalled();
+            expect(AopNavigationService.goToNextPage).toHaveBeenCalled();
         });
 
         it('should should throw an error ', (done) => {
@@ -55,19 +52,19 @@ describe('Nav Decorators', () => {
 
      describe('#RouteBack', () => {
         it('should call goToPreviousPage of NavigationService', () => {
-            spyOn(NavigationService, 'goToPreviousPage');
+            spyOn(AopNavigationService, 'goToPreviousPage');
             const mockClass = new MockDecoratorClass();
             mockClass.mockBackMethod();
-            expect(NavigationService.goToPreviousPage).toHaveBeenCalled();
+            expect(AopNavigationService.goToPreviousPage).toHaveBeenCalled();
         });
      });
 
      describe('#RouteBackAsync', () => {
         it('should call goToPreviousPage of NavigationService if function returns a NavAux instance ', () => {
-            spyOn(NavigationService, 'goToPreviousPage');
+            spyOn(AopNavigationService, 'goToPreviousPage');
             const mockClass = new MockDecoratorClass();
             mockClass.mockBackMethodAsync();
-            expect(NavigationService.goToPreviousPage).toHaveBeenCalled();
+            expect(AopNavigationService.goToPreviousPage).toHaveBeenCalled();
         });
 
         it('should should throw an error ', (done) => {
@@ -84,33 +81,33 @@ describe('Nav Decorators', () => {
 
     describe('#RouteState', () => {
         it('should call goToState of NavigationService with the passed in value of decorator', () => {
-            spyOn(NavigationService, 'goToState');
+            spyOn(AopNavigationService, 'goToState');
             const mockClass = new MockDecoratorClass();
             mockClass.mockRouteToStateMethod();
-            expect(NavigationService.goToState).toHaveBeenCalled();
+            expect(AopNavigationService.goToState).toHaveBeenCalled();
         });
 
         it('should call goToState of NavigationService with the returned value of function', () => {
-            spyOn(NavigationService, 'goToState');
+            spyOn(AopNavigationService, 'goToState');
             const mockClass = new MockDecoratorClass();
             mockClass.mockRouteToStateMethodObj();
-            expect(NavigationService.goToState).toHaveBeenCalled();
+            expect(AopNavigationService.goToState).toHaveBeenCalled();
         });
      });
 
      describe('#RouteStateAsync', () => {
         it('should call goToPreviousPage of NavigationService if function returns a NavAux instance ', () => {
-            spyOn(NavigationService, 'goToState');
+            spyOn(AopNavigationService, 'goToState');
             const mockClass = new MockDecoratorClass();
             mockClass.mockRouteToStateMethoObjAsync();
-            expect(NavigationService.goToState).toHaveBeenCalled();
+            expect(AopNavigationService.goToState).toHaveBeenCalled();
         });
 
         it('should call goToPreviousPage of NavigationService with passed value to decorator ', () => {
-            spyOn(NavigationService, 'goToState');
+            spyOn(AopNavigationService, 'goToState');
             const mockClass = new MockDecoratorClass();
             mockClass.mockRouteToStateMethodAsync();
-            expect(NavigationService.goToState).toHaveBeenCalled();
+            expect(AopNavigationService.goToState).toHaveBeenCalled();
         });
 
         it('should should throw an error ', (done) => {
