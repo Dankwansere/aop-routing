@@ -200,7 +200,7 @@ popstate navigation traversal of the browser history state.
   );
  }
  ```
-
+---
 ### AopNavigator Interface capabilities
 AopNavigator interface contains the following properties that can be used to enhance the decorator functionalities.
 * **destinationPage** - This property can be passed a string or numeric value that can be used for the RouteNext, RouteNextAsync, RouteToState and RouteToStateAsync decorators to perform navigation.
@@ -210,3 +210,46 @@ AopNavigator interface contains the following properties that can be used to enh
 * **preprocess** - This property takes a reference function. This function will be executed prior to any navigations performed by the decorators.
 
 * **param** - This property will take a value of any type that can be used as parameter(s) for the passed function in the preprocess property.
+
+---
+### Custom user defined navigation logic
+Custom logic can be passed to the AopRouting library to override the default navigation logic of the decorators.
+1. Create a class that extends the **AopBaseNavigation** abstract class.
+```
+export class SampleClass extends AopBaseNavigation {}
+```
+
+2. Implement the required abstract methods of the **AopBaseNavigation** abstract class.
+* goToNextPage()
+* goToPreviousPage()
+* goToState()
+
+```
+export class SampleClass extends AopBaseNavigation {
+ public goToNextPage(...) {
+  ...custom logic...
+}
+
+ public goToPreviousPage(...) {
+  ...custom logic...
+}
+
+ public goToState(...) {
+  ...custom logic...
+}
+
+```
+
+3. In the top level/root module add the **AopProxyNavigationService** to the providers array and set the **useClass** to the newly created class
+```
+@NgModule({
+  imports: [
+    ...
+    AopRoutingModule
+  ],
+  providers: [{provide: ProxyNavigationService, useClass: SampleClass}],
+})
+```
+4. The above steps will override the default decorator navigation logic, which means the decorators will now use the custom methods of the newly created class **SampleClass**
+
+---
