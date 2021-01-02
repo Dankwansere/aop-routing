@@ -1,5 +1,5 @@
 import { NavigationExtras } from '@angular/router';
-import { NavigationService } from '../navigation/navigation.service';
+import { AopNavigationService } from '../navigation/aop-navigation.service';
 import { take } from 'rxjs/operators';
 import { NavError } from '../model/enum';
 import { createErrorObj, isTypeNumber, isTypeString, logError } from '../shared/utility';
@@ -24,7 +24,7 @@ export function RouteNext(page?: string, navigationExtras?: NavigationExtras) {
             } else {
                 navObj = prepareNavObject(result, page, navigationExtras);
             }
-            NavigationService.goToNextPage(navObj);
+            AopNavigationService.goToNextPage(navObj);
         };
     };
 }
@@ -39,13 +39,13 @@ export function RouteNextAsync(page?: string, navigationExtras?: NavigationExtra
                     take(1)
                 ).subscribe( result => {
                     let navObj;
-                    if (isTypeString(result)) {
+                    if (isTypeString(result) || page) {
                         page = result || page;
                         navObj = prepareNavObject(undefined, page, navigationExtras);
                     } else {
-                        navObj = prepareNavObject(result);
+                        navObj = prepareNavObject(result, page, navigationExtras);
                     }
-                    NavigationService.goToNextPage(navObj);
+                    AopNavigationService.goToNextPage(navObj);
                 }, error => {
                     logError(createErrorObj(NavError.OBSERVABLE_STREAM));
                     throw new Error(error);
@@ -69,7 +69,7 @@ export function RouteBack() {
         descriptor.value = function(...args: any[]) {
             const result = originalMethod.apply(this, args);
             const navObj = prepareNavObject(result);
-            NavigationService.goToPreviousPage(navObj);
+            AopNavigationService.goToPreviousPage(navObj);
         };
     };
 }
@@ -83,7 +83,7 @@ export function RouteBackAsync() {
                     take(1)
                 ).subscribe(result => {
                     const navObj = prepareNavObject(result);
-                    NavigationService.goToPreviousPage(navObj);
+                    AopNavigationService.goToPreviousPage(navObj);
                 }, error => {
                     logError(createErrorObj(NavError.OBSERVABLE_STREAM));
                     throw new Error(error);
@@ -108,7 +108,7 @@ export function RouteToState(state?: number) {
         descriptor.value = function(...args: any[]) {
             const result = originalMethod.apply(this, args);
             const navObj = prepareNavObject(result, state);
-            NavigationService.goToState(navObj);
+            AopNavigationService.goToState(navObj);
         };
     };
 }
@@ -128,9 +128,9 @@ export function RouteToStateAsync(state?: number) {
                         navObj = prepareNavObject(undefined, state);
                     } else {
                         result = result || state;
-                        navObj = prepareNavObject(result);
+                        navObj = prepareNavObject(result, state);
                     }
-                    NavigationService.goToState(navObj);
+                    AopNavigationService.goToState(navObj);
                 }, error => {
                     logError(createErrorObj(NavError.OBSERVABLE_STREAM));
                     throw new Error(error);

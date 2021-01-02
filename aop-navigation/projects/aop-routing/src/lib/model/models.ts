@@ -32,7 +32,7 @@ export class NavAux {
     }
 }
 
-export abstract class BaseNavigation {
+export abstract class AopBaseNavigation {
 
     /**
      * Skeleton methods to be overrided and provide custom navigation logic.

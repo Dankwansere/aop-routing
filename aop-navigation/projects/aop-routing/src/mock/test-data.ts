@@ -1,9 +1,8 @@
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { RouteBack, RouteBackAsync, RouteNext, RouteNextAsync, RouteToState, RouteToStateAsync } from '../lib/decorators/nav-decorators';
-import { BaseNavigation, NavAux } from '../lib/model/models';
-import { ProxyNavigationService } from '../lib/navigation/proxy-navigation.service';
+import { AopBaseNavigation, NavAux } from '../lib/model/models';
 
-export class GoodProxy extends BaseNavigation {
+export class GoodProxy extends AopBaseNavigation {
     goToNextPage(navObj: NavAux, ...args: any[]): void {}
     goToPreviousPage(navObj: NavAux, ...args: any[]): void {}
     goToState(navObj: NavAux, ...args: any[]): void {}

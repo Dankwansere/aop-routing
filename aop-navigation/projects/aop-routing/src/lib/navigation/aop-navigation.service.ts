@@ -2,7 +2,7 @@ import { Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AopConfig, NavAux } from '../model/models';
-import { ProxyNavigationService } from './proxy-navigation.service';
+import { AopProxyNavigationService } from './aop-proxy-navigation.service';
 import { createErrorObj, isAopNavObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from '../shared/utility';
 import { NavError } from '../model/enum';
 import { RouteHelper } from './router-helper';
@@ -12,20 +12,20 @@ import { Transient } from '../shared/transient';
 @Injectable({
   providedIn: 'root'
 })
-export class NavigationService {
+export class AopNavigationService {
 
   private static routerRef: Router;
   private static locationRef: Location;
-  private static proxyNavRef: ProxyNavigationService;
+  private static proxyNavRef: AopProxyNavigationService;
 
   constructor(private router: Router, private location: Location,
-  @Optional() private proxyNavigationService?: ProxyNavigationService, @Optional() config?: AopConfig) {
+  @Optional() private proxyNavigationService?: AopProxyNavigationService, @Optional() config?: AopConfig) {
     if (config) {
       Transient.useExperimentalFeatures = config.expirementNav;
     }
-    NavigationService.routerRef = this.router;
-    NavigationService.locationRef = this.location;
-    NavigationService.proxyNavRef = this.proxyNavigationService;
+    AopNavigationService.routerRef = this.router;
+    AopNavigationService.locationRef = this.location;
+    AopNavigationService.proxyNavRef = this.proxyNavigationService;
 
    }
 

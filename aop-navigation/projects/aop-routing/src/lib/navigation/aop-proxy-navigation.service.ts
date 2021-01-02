@@ -10,7 +10,7 @@ import { NavAux } from '../model/models';
  * The custom navigation class should be provided by the angular injector through the `useClass` attribute
  * of the provider array.
  */
-export class ProxyNavigationService {
+export class AopProxyNavigationService {
     goToNextPage(navObj: NavAux, ...args: any[]): void {}
     goToPreviousPage(navObj: NavAux, ...args: any[]): void {}
     goToState(navObj: NavAux, ...args: any[]): void {}
