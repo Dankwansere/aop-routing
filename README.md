@@ -1,5 +1,5 @@
 # Aop-Routing
-Provides the capability to perform [Imperative and Popstate navigation](https://medium.com/analytics-vidhya/angular-routing-imperative-vs-popstate-7d254b495c54) operations in Angular through the ease of typescript decorators, without the need to import the Angular Router object
+Provides the capability to perform [Imperative and Popstate navigation](https://medium.com/analytics-vidhya/angular-routing-imperative-vs-popstate-7d254b495c54) operations in Angular through the ease of typescript decorators, **without the need to import the Angular Router object**
 
 # Installation
 Aop-Routing runs on NodeJs and is available as an NPM package
@@ -11,7 +11,7 @@ npm install aop-routing
 1. Add **AopRoutingModule** to the top level/root module import array.
 ```
  imports: [
-   ...,
+   ...
     AopRoutingModule
   ]
 ```
@@ -22,7 +22,7 @@ export class AppModule {
  }
 ```
 ## Features
-Aop-Routing has a lot of features pertaining to angular routing.
+Aop-Routing has a lot of features pertaining to navigation in an Angular app.
 ### Decorator Navigation
 #### RouteNext
 The **RouteNext** decorator can be passed an optional string, and it will automatically perform an imperative routing to the next page at the end of the targetted method's execution.
@@ -131,6 +131,15 @@ public testMethod(): void {
  
  #### RouteBackAsync
 The **RouteBackAsync** decorator can be used on a function which performs **rxjs** [aysnchronous](https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22) operations. The function should return an observable. The **RouteBackAsync** will subscribe to the passed observable and automatically perform popstate navigation to the previous page.
+  
+1. Below example will popstate navigate back to previous page after the asynchronous operation inside the method is complete.
+```
+@RouteBackAsync()
+public testMethod() {
+ return of(...some async operations).pipe(
+ ...rxjs operators...)
+}
+```
 
 
 #### RouteToState
@@ -354,7 +363,7 @@ To remove CanActivate guards from a path at runtime, it's the same steps as addi
 
 #### Removing all CanActivate guards associated to a path.
 To remove all CanActivate guards associated to a path is the same steps as adding a guard. Instead the canActivateGuards property should be set to an empty array.
-  
+```  
 @RouteNext()
 public testMethod() {
   const routeTransform: RouteTransform = {
@@ -363,4 +372,8 @@ public testMethod() {
  };
   return {routeTransform}
 }
+```
+
+```diff
+- Changes made to the Routing table are not persistent. They are reverted back upon completion of navigation
 ```
