@@ -1,43 +1,33 @@
 import { Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { AopConfig } from '../model/models';
+import { AopConfig, NavAux } from '../model/models';
 import { AopProxyNavigationService } from './aop-proxy-navigation.service';
-import {
-  createErrorObj,
-  isAopNavObj,
-  isProxyNavigationProvided,
-  isTypeNumber,
-  isTypeString,
-  logError,
-} from '../shared/utility';
+import { createErrorObj, isAopNavObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from '../shared/utility';
 import { NavError } from '../model/enum';
 import { RouteHelper } from './router-helper';
 import { Transient } from '../shared/transient';
-import { NavAux } from '../model/nav-aux';
 
 // @dynamic//
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AopNavigationService {
+
   private static routerRef: Router;
   private static locationRef: Location;
   private static proxyNavRef: AopProxyNavigationService;
 
-  constructor(
-    private router: Router,
-    private location: Location,
-    @Optional() private proxyNavigationService?: AopProxyNavigationService,
-    @Optional() config?: AopConfig,
-  ) {
+  constructor(private router: Router, private location: Location,
+  @Optional() private proxyNavigationService?: AopProxyNavigationService, @Optional() config?: AopConfig) {
     if (config) {
       Transient.useExperimentalFeatures = config.expirementNav;
     }
     AopNavigationService.routerRef = this.router;
     AopNavigationService.locationRef = this.location;
     AopNavigationService.proxyNavRef = this.proxyNavigationService;
-  }
+
+   }
 
   /**
    * Performs action to call router navigate method and uses the destinationPage property of the NavAux instance
@@ -50,6 +40,7 @@ export class AopNavigationService {
     if (isProxyNavigationProvided(this.proxyNavRef)) {
       this.proxyNavRef.goToNextPage(navObj);
     } else {
+
       if (navObj && navObj.preprocess) {
         this.executePreProcessLogic(navObj.preprocess, navObj.param);
       }
@@ -61,6 +52,7 @@ export class AopNavigationService {
       } else {
         this.executeImperativeNavigation(navObj);
       }
+
     }
   }
 
@@ -86,7 +78,7 @@ export class AopNavigationService {
     }
   }
 
-  /**
+   /**
    * Performs action to call the go method of the History object. If preprocess property of NavAux is provided, it will be executed
    * prior to the execution of the go method.
    * If a ProxyNavigationService token is present it will use the goToState implementation of the ProxyNavigationService instead.
@@ -142,7 +134,6 @@ export class AopNavigationService {
    * @param preProcessFunc - Function reference
    * @param param - Parameter to be used for the function
    */
-  // tslint:disable-next-line:ban-types
   public static executePreProcessLogic(preProcessFunc: Function, param): void {
     try {
       if (preProcessFunc) {
@@ -152,5 +143,6 @@ export class AopNavigationService {
       logError(createErrorObj(NavError.PREPROCRESS_FUNC + preProcessFunc.name));
       throw e;
     }
+   
   }
 }
