@@ -8,14 +8,14 @@ npm install aop-routing
 ```
 
 # Usage
-1. Add AopRoutingModule to the top level/root module import array.
+1. Add **AopRoutingModule** to the top level/root module import array.
 ```
  imports: [
    ...,
     AopRoutingModule
   ]
 ```
-2. Inject Aop-Routig NavigationService into your top level/root module constructor.
+2. Inject **AopNavigationService** into your top level/root module constructor.
 ```
 export class AppModule {
   constructor(private navigationService: NavigationService) {}
@@ -30,7 +30,7 @@ The below example will automatically route to page1 at the end of the testMethod
 ```
 @RouteNext('page1')
 public testMethod(): void {
-// some logic
+ ...some logic...
 }
 ```
 Should the need be required to pass a dynamic value to RouteNext, this can be done by allowing the targetted function to return a string or an **AopNavigator Object**.
@@ -39,7 +39,7 @@ Should the need be required to pass a dynamic value to RouteNext, this can be do
 ```
 @RouteNext()
 public testMethod(): string {
-// some logic
+ ...some logic...
 return 'page1'
 }
 ```
@@ -48,7 +48,7 @@ return 'page1'
 ```
 @RouteNext()
 public testMethod(): string {
-// some logic
+ ...some logic...
   const obj: AopNavigator = {
      destinationPage: 'Test2',
    };
@@ -106,6 +106,18 @@ public testMethod(): Observable<string> {
   );
  }
  ```
+ 
+ #### NavigationExtras for RouteNext and RouteNextAsync
+ An [Angular NavigationExtras object](https://angular.io/api/router/NavigationExtras) can be passed to RouteNext and RouteNextAsync to allow extra options to modify the Router navigation strategy.
+  
+The below example will route to page1 and set the Router **skipLocationChange** to true
+```
+@RouteNext('page1',  {skipLocationChange: true})
+public testMethod(): void {
+ ...some logic...
+}
+```
+ 
  
  #### RouteBack
  RouteBack decorator when used on a targetted method, will automatically perform popstate navigation back to the previous page after the end of the targetted method execution.
@@ -188,3 +200,13 @@ popstate navigation traversal of the browser history state.
   );
  }
  ```
+
+### AopNavigator Interface capabilities
+AopNavigator interface contains the following properties that can be used to enhance the decorator functionalities.
+* **destinationPage** - This property can be passed a string or numeric value that can be used for the RouteNext, RouteNextAsync, RouteToState and RouteToStateAsync decorators to perform navigation.
+
+* **navigationExtra** - This property takes an [Angular NavigationExtras object](https://angular.io/api/router/NavigationExtras) to allow extra options to modify the Router navigation strategy for RouteNext and RouteNextAsync decorator.
+
+* **preprocess** - This property takes a reference function. This function will be executed prior to any navigations performed by the decorators.
+
+* **param** - This property will take a value of any type that can be used as parameter(s) for the passed function in the preprocess property.
