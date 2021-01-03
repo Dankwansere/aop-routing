@@ -63,11 +63,11 @@ describe('Utility', () => {
     it(`should return true if useExperimentalFeatures flag of RouteHelper
     is true and passed object contains a routeTransform property`, () => {
         Transient.useExperimentalFeatures = true;
-       const mockObj = {
-           routeTransform: ''
-       }
-       const result = isAopNavObj(mockObj);
-       expect(result).toBe(true);
+        const mockObj = {
+            routeTransform: ''
+        };
+        const result = isAopNavObj(mockObj);
+        expect(result).toBe(true);
    });
 
    it(`should return false if useExperimentalFeatures flag of RouteHelper

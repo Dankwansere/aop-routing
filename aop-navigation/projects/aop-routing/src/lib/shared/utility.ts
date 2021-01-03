@@ -1,5 +1,5 @@
+import { AopBaseNavigation } from '../model/abstract/aop-base-navigation';
 import { NavError } from '../model/enum';
-import { AopBaseNavigation } from '../model/models';
 import { AopProxyNavigationService } from '../navigation/aop-proxy-navigation.service';
 import { Transient } from './transient';
 

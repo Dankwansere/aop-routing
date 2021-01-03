@@ -1,9 +1,10 @@
-import { Type } from '@angular/core';
-import { Routes, Router, Route } from '@angular/router';
 import cloneDeep from 'lodash/cloneDeep';
-import { NavError } from '../model/enum';
-import { RouteTransform } from '../model/models';
 import { createErrorObj, logError } from '../shared/utility';
+import { NavError } from '../model/enum';
+import { Route, Router, Routes } from '@angular/router';
+import { RouteTransform } from '../model/models';
+import { Type } from '@angular/core';
+
 
 // @dynamic//
 export class RouteHelper {

@@ -1,6 +1,7 @@
 import { NavigationExtras } from '@angular/router';
 import { mockFunction } from '../../mock/test-data';
-import { NavAux, RouteTransform } from '../model/models';
+import { RouteTransform } from '../model/models';
+import { NavAux } from '../model/nav-aux';
 import { Transient } from '../shared/transient';
 import { createNavObj, prepareNavObject, updateNavObj } from './navigation-helper';
 
@@ -22,7 +23,7 @@ describe('#navigation-helper', () => {
                 path: 'Test3',
                 component: dummyComp
                };
-            const mockObj = {routeTransform}
+            const mockObj = {routeTransform};
             const result = prepareNavObject(mockObj);
             expect(result.navAux).toBeDefined();
             expect(result.routeTransform).toBeDefined();

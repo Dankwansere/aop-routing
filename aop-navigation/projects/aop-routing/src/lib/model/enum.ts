@@ -8,5 +8,5 @@ export enum NavError {
     STATE_HISTORY = 'Failed to load specific page from session history',
     EXPERIMENTAL_FEATURE_ROUTE_TRANSFORM = 'Cannot use RouteTransform object with experimental flag turned off',
     EXPERIMENTAL_FEATURE_COMPONENT_MISSING = 'No component provided to create a new route path object',
-    EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM = "EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM"
+    EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM = 'EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM'
 }

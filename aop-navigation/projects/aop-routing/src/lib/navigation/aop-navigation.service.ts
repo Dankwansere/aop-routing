@@ -1,12 +1,13 @@
 import { Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { AopConfig, NavAux } from '../model/models';
+import { AopConfig } from '../model/models';
 import { AopProxyNavigationService } from './aop-proxy-navigation.service';
 import { createErrorObj, isAopNavObj, isProxyNavigationProvided, isTypeNumber, isTypeString, logError } from '../shared/utility';
 import { NavError } from '../model/enum';
 import { RouteHelper } from './router-helper';
 import { Transient } from '../shared/transient';
+import { NavAux } from '../model/nav-aux';
 
 // @dynamic//
 @Injectable({
@@ -78,7 +79,7 @@ export class AopNavigationService {
     }
   }
 
-   /**
+  /**
    * Performs action to call the go method of the History object. If preprocess property of NavAux is provided, it will be executed
    * prior to the execution of the go method.
    * If a ProxyNavigationService token is present it will use the goToState implementation of the ProxyNavigationService instead.
@@ -134,6 +135,7 @@ export class AopNavigationService {
    * @param preProcessFunc - Function reference
    * @param param - Parameter to be used for the function
    */
+  // tslint:disable-next-line:ban-types
   public static executePreProcessLogic(preProcessFunc: Function, param): void {
     try {
       if (preProcessFunc) {
@@ -143,6 +145,5 @@ export class AopNavigationService {
       logError(createErrorObj(NavError.PREPROCRESS_FUNC + preProcessFunc.name));
       throw e;
     }
-   
   }
 }

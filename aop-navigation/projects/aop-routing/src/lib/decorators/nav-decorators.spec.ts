@@ -1,5 +1,5 @@
-import { AopNavigationService } from '../navigation/aop-navigation.service';
 import { MockDecoratorClass } from '../../mock/test-data';
+import { AopNavigationService } from '../navigation/aop-navigation.service';
 
 describe('Nav Decorators', () => {
     beforeEach(() => {

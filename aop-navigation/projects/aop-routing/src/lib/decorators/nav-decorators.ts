@@ -1,9 +1,9 @@
 import { NavigationExtras } from '@angular/router';
-import { AopNavigationService } from '../navigation/aop-navigation.service';
 import { take } from 'rxjs/operators';
 import { NavError } from '../model/enum';
-import { createErrorObj, isTypeNumber, isTypeString, logError } from '../shared/utility';
+import { AopNavigationService } from '../navigation/aop-navigation.service';
 import { prepareNavObject } from '../navigation/navigation-helper';
+import { createErrorObj, isTypeNumber, isTypeString, logError } from '../shared/utility';
 
 
 /**
@@ -43,7 +43,7 @@ export function RouteNextAsync() {
                         navObj = prepareNavObject(undefined, result);
 
                     } else {
-                        navObj = prepareNavObject(result, page, navigationExtras);
+                        navObj = prepareNavObject(result);
                     }
                     AopNavigationService.goToNextPage(navObj);
                 }, error => {

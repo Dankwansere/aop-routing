@@ -1,10 +1,11 @@
 import { GoodProxy, mockFunction } from '../../mock/test-data';
-import { AopConfig, NavAux, RouteTransform } from '../model/models';
+import { AopConfig, RouteTransform } from '../model/models';
 import { Transient } from '../shared/transient';
 import { prepareNavObject } from './navigation-helper';
 import { AopNavigationService } from './aop-navigation.service';
 import { AopProxyNavigationService } from './aop-proxy-navigation.service';
 import { RouteHelper } from './router-helper';
+import { NavAux } from '../model/nav-aux';
 
 
 describe('NavigationService', () => {
