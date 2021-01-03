@@ -49,7 +49,7 @@
       }
     }
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "~8.1.0",
     "@angular/common": "~8.1.0",
