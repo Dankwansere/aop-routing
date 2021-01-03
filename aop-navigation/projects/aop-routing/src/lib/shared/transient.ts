@@ -1,5 +1,4 @@
-
 // @dynamic//
 export class Transient {
-    public static useExperimentalFeatures: boolean;
+  public static useExperimentalFeatures: boolean;
 }

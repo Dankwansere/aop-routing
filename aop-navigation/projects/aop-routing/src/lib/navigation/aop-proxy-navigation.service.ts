@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavAux } from '../model/models';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 /**
  * Dummy service to allow custom implemenation of navigation logic.
@@ -11,7 +11,7 @@ import { NavAux } from '../model/models';
  * of the provider array.
  */
 export class AopProxyNavigationService {
-    goToNextPage(navObj: NavAux, ...args: any[]): void {}
-    goToPreviousPage(navObj: NavAux, ...args: any[]): void {}
-    goToState(navObj: NavAux, ...args: any[]): void {}
+  goToNextPage(navObj: NavAux, ...args: any[]): void {}
+  goToPreviousPage(navObj: NavAux, ...args: any[]): void {}
+  goToState(navObj: NavAux, ...args: any[]): void {}
 }
