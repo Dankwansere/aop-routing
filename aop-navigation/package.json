@@ -1,6 +1,6 @@
 {
   "name": "aop-navigation",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Provides the capability to perform Imperative and Popstate navigation operationsin Angular through the ease of typescript decorators, without the need to import the Angular Router object",
   "author": "Eric Sarpong",
   "repository": {
