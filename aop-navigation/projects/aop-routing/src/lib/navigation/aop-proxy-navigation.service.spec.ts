@@ -1,4 +1,4 @@
-import { NavAux } from '../model/models';
+import { NavAux } from '../model/nav-aux';
 import { AopProxyNavigationService } from './aop-proxy-navigation.service';
 
 describe('ProxyNavigationService', () => {
