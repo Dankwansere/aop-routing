@@ -19,11 +19,11 @@
       "dom"
     ],
     "paths": {
-      "ng-velocity": [
-        "dist/ng-velocity"
+      "aop-routing": [
+        "dist/aop-routing"
       ],
-      "ng-velocity/*": [
-        "dist/ng-velocity/*"
+      "aop-routing/*": [
+        "dist/aop-routing/*"
       ]
     }
   }
