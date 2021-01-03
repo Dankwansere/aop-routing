@@ -1,6 +1,25 @@
 {
   "name": "aop-routing",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "Provides the capability to perform Imperative and Popstate navigation operationsin Angular through the ease of typescript decorators, without the need to import the Angular Router object",
+  "author": "Eric Sarpong",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dankwansere/aop-navigation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dankwansere/aop-navigation/issues"
+  },
+  "keywords": [
+    "angular",
+    "javascript",
+    "typescript",
+    "routing",
+    "navigation",
+    "popstate",
+    "browser"
+  ],
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^8.1.0",
     "@angular/core": "^8.1.0",

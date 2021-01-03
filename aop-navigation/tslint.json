@@ -4,8 +4,14 @@
   ],
   "rules": {
     "arrow-return-shorthand": true,
+    "only-arrow-functions": false,
+    "ordered-imports": [true, {
+      "import-sources-order": "any",
+      "named-imports-order": "case-insensitive"
+    }],
     "callable-types": true,
     "class-name": true,
+    "max-classes-per-file": [false, 1],
     "comment-format": [
       true,
       "check-space"
@@ -26,6 +32,7 @@
       "spaces"
     ],
     "interface-over-type-literal": true,
+    "interface-name": [true, "never-prefix"],
     "label-position": true,
     "max-line-length": [
       true,
@@ -63,6 +70,7 @@
       true,
       "ignore-params"
     ],
+    "prefer-for-of": false,
     "no-misused-new": true,
     "no-non-null-assertion": true,
     "no-redundant-jsdoc": true,
@@ -109,6 +117,7 @@
     ],
     "unified-signatures": true,
     "variable-name": false,
+    "one-variable-per-declaration": false,
     "whitespace": [
       true,
       "check-branch",
@@ -127,5 +136,6 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true
-  }
+  },
+  "extends": ["tslint:recommended", "tslint-config-prettier"]
 }

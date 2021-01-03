@@ -1,5 +1,5 @@
 import { NavigationExtras } from '@angular/router';
-import { NavAux } from '../model/models';
+import { NavAux } from '../model/nav-aux';
 import { isAopNavObj } from '../shared/utility';
 
 /**
@@ -9,24 +9,24 @@ import { isAopNavObj } from '../shared/utility';
  * @param navigationExtras - Router navigation extra properties
  */
 export function prepareNavObject(result: any, page?: string | number, navigationExtras?: NavigationExtras): any {
-    let navObj: NavAux;
+  let navObj: NavAux;
 
-    if (isAopNavObj(result)) {
-        return {
-            navAux: createNavObj(result.routeTransform.path, result.navigationExtra),
-            routeTransform: result.routeTransform
-        };
-    }
+  if (isAopNavObj(result)) {
+    return {
+      navAux: createNavObj(result.routeTransform.path, result.navigationExtra),
+      routeTransform: result.routeTransform,
+    };
+  }
 
-    if (page) {
-        navObj = createNavObj(page, navigationExtras);
-    }
+  if (page) {
+    navObj = createNavObj(page, navigationExtras);
+  }
 
-    if (typeof result === 'object') {
-        navObj = updateNavObj(navObj, result);
-    }
+  if (typeof result === 'object') {
+    navObj = updateNavObj(navObj, result);
+  }
 
-    return navObj;
+  return navObj;
 }
 
 /**
@@ -35,7 +35,7 @@ export function prepareNavObject(result: any, page?: string | number, navigation
  * @param navigationExtras - Router extra properties
  */
 export function createNavObj(page: string | number, navigationExtras: NavigationExtras): NavAux {
-    return new NavAux(page, navigationExtras);
+  return new NavAux(page, navigationExtras);
 }
 
 /**
@@ -44,23 +44,22 @@ export function createNavObj(page: string | number, navigationExtras: Navigation
  * @param newNavObj - New Instance of NavAux class
  */
 export function updateNavObj(oldNavObj: NavAux, newNavObj: NavAux): NavAux {
-
-    if (oldNavObj) {
-        if (newNavObj.destinationPage) {
-            oldNavObj.destinationPage = newNavObj.destinationPage;
-        }
-
-        if (newNavObj.navigationExtra) {
-            oldNavObj.navigationExtra = newNavObj.navigationExtra;
-        }
-
-        if (newNavObj.preprocess) {
-            oldNavObj.preprocess = newNavObj.preprocess;
-        }
-        if (newNavObj.param) {
-            oldNavObj.param = newNavObj.param;
-        }
-        return oldNavObj;
+  if (oldNavObj) {
+    if (newNavObj.destinationPage) {
+      oldNavObj.destinationPage = newNavObj.destinationPage;
     }
-    return newNavObj;
+
+    if (newNavObj.navigationExtra) {
+      oldNavObj.navigationExtra = newNavObj.navigationExtra;
+    }
+
+    if (newNavObj.preprocess) {
+      oldNavObj.preprocess = newNavObj.preprocess;
+    }
+    if (newNavObj.param) {
+      oldNavObj.param = newNavObj.param;
+    }
+    return oldNavObj;
+  }
+  return newNavObj;
 }
