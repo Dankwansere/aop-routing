@@ -1,5 +1,5 @@
 import { NavigationExtras } from '@angular/router';
-import { NavAux } from '../model/models';
+import { NavAux } from '../model/nav-aux';
 import { isAopNavObj } from '../shared/utility';
 
 /**

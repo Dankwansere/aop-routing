@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavAux } from '../model/models';
+import { NavAux } from '../model/nav-aux';
 
 @Injectable({
   providedIn: 'root',
