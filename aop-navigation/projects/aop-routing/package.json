@@ -1,6 +1,6 @@
 {
   "name": "aop-routing",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": "^8.1.0",
     "@angular/core": "^8.1.0",
