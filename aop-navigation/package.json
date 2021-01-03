@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test --code-coverage --watch=false",
-    "format": "prettier --write \"projects/aop-routing/src/**/*.ts\" \"projects/aop-routing/src/**/*.js\"",
+    "format": "prettier --write \"projects/aop-routing/src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "e2e": "ng e2e",
     "compodoc": "npx compodoc -p tsconfig.json projects"
