@@ -11,6 +11,11 @@ Provides the capability to perform [Imperative and Popstate navigation](https://
 
 
 # Installation
+
+```diff
+- Note: This library requires Angular version 8.1 or higher
+```
+
 Aop-Routing runs on NodeJs and is available as an NPM package
 ```
 npm install aop-routing
