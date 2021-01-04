@@ -1,14 +1,14 @@
 {
-  "name": "aop-navigation",
+  "name": "aop-routing",
   "version": "0.0.1",
   "description": "Provides the capability to perform Imperative and Popstate navigation operationsin Angular through the ease of typescript decorators, without the need to import the Angular Router object",
   "author": "Eric Sarpong",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dankwansere/aop-navigation.git"
+    "url": "https://github.com/Dankwansere/aop-routing.git"
   },
   "bugs": {
-    "url": "https://github.com/Dankwansere/aop-navigation/issues"
+    "url": "https://github.com/Dankwansere/aop-routing/issues"
   },
   "keywords": [
     "angular",
@@ -24,10 +24,10 @@
     "ng": "ng",
     "start": "ng serve",
     "prepare": "npm run build",
-    "prepublishOnly" : "npm test && npm run lint",
-    "preversion" : "npm run lint",
-    "version" : "npm run format && git add -A src",
-    "postversion" : "git push && git push --tags",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A projects/aop-routing/src",
+    "postversion": "git push && git push --tags",
     "build": "ng build",
     "test": "ng test --code-coverage --watch=false",
     "format": "prettier --write \"projects/aop-routing/src/**/*.ts\"",
