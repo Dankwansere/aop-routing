@@ -27,7 +27,7 @@ npm install aop-routing
 2. Inject **AopNavigationService** into your top level/root module constructor.
 ```
 export class AppModule {
-  constructor(private navigationService: NavigationService) {}
+  constructor(private navigationService: AopNavigationService) {}
  }
 ```
 ## Features
@@ -132,7 +132,7 @@ public testMethod(): void {
  #### RouteBackAsync
 The **RouteBackAsync** decorator can be used on a function which performs **rxjs** [aysnchronous](https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22) operations. The function should return an observable. The **RouteBackAsync** will subscribe to the passed observable and automatically perform popstate navigation to the previous page.
   
-1. Below example will popstate navigate back to previous page after the asynchronous operation inside the method is complete.
+Below example will popstate navigate back to previous page after the asynchronous operation inside the method is complete.
 ```
 @RouteBackAsync()
 public testMethod() {
