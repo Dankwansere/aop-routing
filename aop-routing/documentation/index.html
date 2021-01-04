@@ -1,0 +1,378 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>aop-routing documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	      <link rel="stylesheet" href="./styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="./" class="navbar-brand">aop-routing documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content getting-started">
+                   <div class="content-data">
+
+<h1 id="aop-routing">Aop-Routing</h1>
+<p>Provides the capability to perform <a href="https://medium.com/analytics-vidhya/angular-routing-imperative-vs-popstate-7d254b495c54">Imperative and Popstate navigation</a> operations in Angular through the ease of typescript decorators, <strong>without the need to import the Angular Router object</strong></p>
+<p><strong>List of features include</strong></p>
+<ul>
+<li>Imperative navigation using decorators</li>
+<li>PopState navigation using decorators</li>
+<li>Custom navigation logic to override default navigation logic</li>
+<li>Dynamically add new path to routing table at runtime</li>
+<li>Dynamically change the component of a path at runtime</li>
+<li>Dynamically add/remove CanActivate guards at runtime </li>
+</ul>
+<h1 id="installation">Installation</h1>
+<p>Aop-Routing runs on NodeJs and is available as an NPM package</p>
+<div><pre class="line-numbers"><code class="language-none">npm install aop-routing</code></pre></div><h1 id="usage">Usage</h1>
+<ol>
+<li><p>Add <strong>AopRoutingModule</strong> to the top level/root module import array.</p>
+<div><pre class="line-numbers"><code class="language-none">imports: [
+...
+ AopRoutingModule
+]</code></pre></div></li>
+<li><p>Inject <strong>AopNavigationService</strong> into your top level/root module constructor.</p>
+<div><pre class="line-numbers"><code class="language-none">export class AppModule {
+constructor(private navigationService: NavigationService) {}
+}</code></pre></div><h2 id="features">Features</h2>
+<p>Aop-Routing has a lot of features pertaining to navigation in an Angular app.</p>
+<h3 id="decorator-navigation">Decorator Navigation</h3>
+<h4 id="routenext">RouteNext</h4>
+<p>The <strong>RouteNext</strong> decorator can be passed an optional string, and it will automatically perform an imperative routing to the next page at the end of the targeted method&#39;s execution.
+The below example will automatically route to page1 at the end of the testMethod execution.</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNext(&#39;page1&#39;)
+public testMethod(): void {
+...some logic...
+}</code></pre></div><p>Should the need be required to pass a dynamic value to RouteNext, this can be done by allowing the targeted function to return a string or an <strong>AopNavigator Object</strong>.</p>
+</li>
+<li><p>Below example will use the returned string value of the testMethod to route to the page</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNext()
+public testMethod(): string {
+...some logic...
+return &#39;page1&#39;
+}</code></pre></div></li>
+<li><p>Below example will use the returned <strong>AopNavigator object</strong> of the test method to perform routing.</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNext()
+public testMethod(): Observable&lt;AopNavigator&gt; {
+...some logic...
+const obj: AopNavigator = {
+  destinationPage: &#39;Test2&#39;,
+};
+return obj;
+}</code></pre></div></li>
+</ol>
+<h4 id="routenextasync">RouteNextAsync</h4>
+<p>The <strong>RouteNextAsync</strong> decorator can be used on a function which performs <strong>rxjs</strong> <a href="https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22">aysnchronous</a> operations. The function should return an observable. The <strong>RouteNextAsync</strong> will subscribe to the passed observable and automatically perform imperative navigation.</p>
+<p>The method should return an <strong>Observable<string></strong> or <strong>AopNavigator object</strong> which the decorator will use to perform imperative navigation</p>
+<ol>
+<li><p>Below example will make the decorator subscribe to the <strong>Observable<string></strong> value returned from the targeted method and use that value to perform</p>
+<p>imperative routing.</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNextAsync()
+public testMethod(): Observable&lt;string&gt; {
+...some logic...
+return of(1, 2, 3).pipe(
+switchMap(x =&gt; {
+  return of(&#39;page1&#39;);
+})
+);
+}</code></pre></div></li>
+</ol>
+<ol start="2">
+<li><p>Below example will make the decorator subscribe to the <strong>AopNavigator object</strong> returned from the targeted method and use the <strong>destinationPage</strong> property value to perform</p>
+<p>imperative routing.</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNextAsync()
+public testMethod(): Observable&lt;AopNavigator&gt; {
+...some logic...
+
+const obj: AopNavigator = {
+destinationPage: &#39;Test2&#39;,
+};
+
+return of(1, 2, 3).pipe(
+switchMap(x =&gt; {
+ return of(obj);
+})
+);
+}</code></pre></div><h4 id="navigationextras-for-routenext-and-routenextasync">NavigationExtras for RouteNext and RouteNextAsync</h4>
+<p>An <a href="https://angular.io/api/router/NavigationExtras">Angular NavigationExtras object</a> can be passed to RouteNext and RouteNextAsync to allow extra options to modify the Router navigation strategy.</p>
+</li>
+</ol>
+<p>The below example will route to page1 and set the Router <strong>skipLocationChange</strong> to true</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNext(&#39;page1&#39;,  {skipLocationChange: true})
+public testMethod(): void {
+ ...some logic...
+}</code></pre></div><h4 id="routeback">RouteBack</h4>
+<p> RouteBack decorator when used on a targeted method, will automatically perform popstate navigation back to the previous page after the end of the targeted method execution.</p>
+<div><pre class="line-numbers"><code class="language-none"> &#64;RouteBack()
+ public testMethod() {
+  ...some logic...
+ }</code></pre></div><h4 id="routebackasync">RouteBackAsync</h4>
+<p>The <strong>RouteBackAsync</strong> decorator can be used on a function which performs <strong>rxjs</strong> <a href="https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22">aysnchronous</a> operations. The function should return an observable. The <strong>RouteBackAsync</strong> will subscribe to the passed observable and automatically perform popstate navigation to the previous page.</p>
+<ol>
+<li>Below example will popstate navigate back to previous page after the asynchronous operation inside the method is complete.<div><pre class="line-numbers"><code class="language-none">&#64;RouteBackAsync()
+public testMethod() {
+return of(...some async operations).pipe(
+...rxjs operators...)
+}</code></pre></div></li>
+</ol>
+<h4 id="routetostate">RouteToState</h4>
+<p>RouteToState decorator when used on a targeted method, will automatically perform popste navigation to the destination page in the history state. If a negative number is provided, RouteToState will popstate naivage backwards equivalent to the passed integer, likewise it will popstate navigate forwards for a positive integer.</p>
+<ol>
+<li><p>Below example will traverse 2 states backwards of the browser history state</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteToState(-2)
+public testMethod() {
+...some logic...
+}</code></pre></div></li>
+<li><p>Below example will traverse 2 states forward of the browser history state</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteToState(2)
+public testMethod() {
+...some logic...
+}</code></pre></div></li>
+</ol>
+<h4 id="routetostateasync">RouteToStateAsync</h4>
+<p>The <strong>RouteToStateAsync</strong> decorator can be used on a function which performs <strong>rxjs</strong> <a href="https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22">aysnchronous</a> operations. The function should return an observable. The <strong>RouteToStateAsync</strong> will subscribe to the passed observable and automatically perform popstate navigation traversion of the history state.</p>
+<ol>
+<li><p>Below example will subscribe to the targeted method and use the returned value to traverse -2 states backwards of the browser history state after end of targeted method.</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteToStateAsync()
+public testMethod(): Observable&lt;number&gt; {
+...some logic...
+return of(1, 2, 3).pipe(
+ switchMap(x =&gt; {
+   return of(-2);
+ })
+);
+}</code></pre></div></li>
+<li><p>Below example will make the decorator subscribe to the <strong>AopNavigator object</strong> returned from the targeted method and use the <strong>destinationPage</strong> property value to perform</p>
+</li>
+</ol>
+<p>popstate navigation traversal of the browser history state.</p>
+<div><pre class="line-numbers"><code class="language-none"> &#64;RouteToStateAsync()
+ public testMethod(): Observable&lt;AopNavigator&gt; {
+   ...some logic...
+
+    const obj: AopNavigator = {
+     destinationPage: -2&#39;,
+   };
+
+   return of(1, 2, 3).pipe(
+    switchMap(x =&gt; {
+      return of(obj);
+    })
+  );
+ }</code></pre></div><hr>
+<h3 id="aopnavigator-interface-capabilities">AopNavigator Interface capabilities</h3>
+<p>AopNavigator interface contains the following properties that can be used to enhance the decorator functionalities.</p>
+<ul>
+<li><p><strong>destinationPage</strong> - This property can be passed a string or numeric value that can be used for the RouteNext, RouteNextAsync, RouteToState and RouteToStateAsync decorators to perform navigation.</p>
+</li>
+<li><p><strong>navigationExtra</strong> - This property takes an <a href="https://angular.io/api/router/NavigationExtras">Angular NavigationExtras object</a> to allow extra options to modify the Router navigation strategy for RouteNext and RouteNextAsync decorator.</p>
+</li>
+<li><p><strong>preprocess</strong> - This property takes a reference function. This function will be executed prior to any navigations performed by the decorators.</p>
+</li>
+<li><p><strong>param</strong> - This property will take a value of any type that can be used as parameter(s) for the passed function in the preprocess property.</p>
+</li>
+</ul>
+<hr>
+<h3 id="custom-user-defined-navigation-logic">Custom user defined navigation logic</h3>
+<p>Custom logic can be passed to the AopRouting library to override the default navigation logic of the decorators.</p>
+<ol>
+<li><p>Create a class that extends the <strong>AopBaseNavigation</strong> abstract class.</p>
+<div><pre class="line-numbers"><code class="language-none">export class SampleClass extends AopBaseNavigation {}</code></pre></div></li>
+<li><p>Implement the required abstract methods of the <strong>AopBaseNavigation</strong> abstract class.</p>
+</li>
+</ol>
+<ul>
+<li>goToNextPage()</li>
+<li>goToPreviousPage()</li>
+<li>goToState()</li>
+</ul>
+<div><pre class="line-numbers"><code class="language-none">export class SampleClass extends AopBaseNavigation {
+ public goToNextPage(...) {
+  ...custom logic...
+}
+
+ public goToPreviousPage(...) {
+  ...custom logic...
+}
+
+ public goToState(...) {
+  ...custom logic...
+}
+</code></pre></div><ol start="3">
+<li>In the top level/root module add the <strong>AopProxyNavigationService</strong> to the providers array and set the <strong>useClass</strong> to the newly created class<div><pre class="line-numbers"><code class="language-none">&#64;NgModule({
+imports: [
+ ...
+ AopRoutingModule
+],
+providers: [{provide: AopProxyNavigationService, useClass: SampleClass}],
+})</code></pre></div></li>
+<li>The above steps will override the default decorator navigation logic, which means the decorators will now use the custom methods of the newly created class <strong>SampleClass</strong></li>
+</ol>
+<hr>
+<h3 id="experiemental-features">Experiemental Features</h3>
+<p>AopRouting can dynamically modify the routing table during runtime of an Angular application.</p>
+<div><pre class="line-numbers"><code class="language-diff">- Note the below features are experimental and should be used with caution</code></pre></div><p>To enable the experimental features of the AopRouting library, pass an object with <strong>experimentalNav</strong> property set to true to the <strong>AopRoutingModule</strong> forRoot method to the top level/root module:</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;NgModule({
+  ...
+  imports: [
+    ...
+    AopRoutingModule.forRoot({expirementNav: true})
+  ],
+  ...
+})</code></pre></div><p>The below Routing table will be used to demonstrate the features and examples:</p>
+<div><pre class="line-numbers"><code class="language-none">const routes: Routes = [
+  {path: &#39;page1&#39;, component: Page1Component},
+  {path: &#39;page2&#39;, component: Page2Component }
+];</code></pre></div><h4 id="adding-new-path-to-the-routing-table-at-runtime">Adding new Path to the Routing Table at runtime.</h4>
+<p>A new Path can be dynamically created and to the Routing table and also navigated to at runtime . Suppose we want to add <strong>page3</strong> that should route to <strong>Page3Component</strong></p>
+<ol>
+<li><p>Create a routeTransform object and set the <strong>path</strong> and <em>*component</em> property:</p>
+<div><pre class="line-numbers"><code class="language-none">const routeTransform: RouteTransform = {
+ path: &#39;page3&#39;,
+ component: Page3Component
+};</code></pre></div></li>
+<li><p>In the RouteNext or RouteNextAsync deocrator of the targeted function, return an <strong>AopNav</strong> object with the routeTransform property set.</p>
+</li>
+</ol>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNext()
+public testMethod() {
+  const routeTransform: RouteTransform = {
+    path: &#39;page3&#39;,
+    component: Page3Component
+ };
+  return {routeTransform}
+}</code></pre></div><h4 id="changing-component-of-a-path-at-runtime">Changing component of a Path at runtime</h4>
+<p>A component that has been statically set to a path can be changed and navigated to at runtime. Suppose we want to change <strong>page1</strong> to route to <strong>Page3Component</strong> instead:</p>
+<ol>
+<li><p>Create a routeTransform object and set the <strong>path</strong> and <em>*component</em> property:</p>
+<div><pre class="line-numbers"><code class="language-none">const routeTransform: RouteTransform = {
+ path: &#39;page1&#39;,
+ component: Page3Component
+};</code></pre></div></li>
+<li><p>In the RouteNext or RouteNextAsync deocrator of the targeted function, return an <strong>AopNav</strong> object with the routeTransform property set:</p>
+</li>
+</ol>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNext()
+public testMethod() {
+  const routeTransform: RouteTransform = {
+    path: &#39;page1&#39;,
+    component: Page3Component
+ };
+  return {routeTransform}
+}</code></pre></div><h4 id="add-canactivate-guards-at-runtime">Add CanActivate guard(s) at runtime</h4>
+<p>CanActivate guards can be added to a path at runtime. Suppose we want to add a guard <strong>page1</strong> path</p>
+<ol>
+<li><p>Create a routeTransform object and set the <strong>path1</strong> and <strong>canActivateGuards</strong> property by providing the name(s) of CanActivate guard(s) to be added:</p>
+<div><pre class="line-numbers"><code class="language-none">const routeTransform: RouteTransform = {
+ path: &#39;page1&#39;,
+ canActivateGuards: [guard1, guard2]
+};</code></pre></div></li>
+<li><p>In the RouteNext or RouteNextAsync deocrator of the targeted function, return an <strong>AopNav</strong> object with the routeTransform property set:</p>
+</li>
+</ol>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNext()
+public testMethod() {
+  const routeTransform: RouteTransform = {
+    path: &#39;page1&#39;,
+    canActivateGuards: [guard1, guard2]
+ };
+  return {routeTransform}
+}</code></pre></div><h4 id="removing-guards-from-a-path">Removing guard(s) from a path</h4>
+<p>To remove CanActivate guards from a path at runtime, it&#39;s the same steps as adding guards. If the guards provided exist in the routing table, they will be removed.</p>
+<h4 id="removing-all-canactivate-guards-associated-to-a-path">Removing all CanActivate guards associated to a path.</h4>
+<p>To remove all CanActivate guards associated to a path is the same steps as adding a guard. Instead the canActivateGuards property should be set to an empty array.</p>
+<div><pre class="line-numbers"><code class="language-none">&#64;RouteNext()
+public testMethod() {
+  const routeTransform: RouteTransform = {
+    path: &#39;page1&#39;,
+    canActivateGuards: []
+ };
+  return {routeTransform}
+}</code></pre></div><div><pre class="line-numbers"><code class="language-diff">- Changes made to the Routing table are not persistent. They are reverted back upon completion of navigation</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="./js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="./js/menu-wc.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+       <script src="./js/libs/zepto.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
