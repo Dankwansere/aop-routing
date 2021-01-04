@@ -11,6 +11,11 @@ Provides the capability to perform [Imperative and Popstate navigation](https://
 
 
 # Installation
+
+```diff
+- Note: This library requires Angular version 8.1 or higher
+```
+
 Aop-Routing runs on NodeJs and is available as an NPM package
 ```
 npm install aop-routing
@@ -27,7 +32,7 @@ npm install aop-routing
 2. Inject **AopNavigationService** into your top level/root module constructor.
 ```
 export class AppModule {
-  constructor(private navigationService: NavigationService) {}
+  constructor(private navigationService: AopNavigationService) {}
  }
 ```
 ## Features
@@ -72,7 +77,6 @@ The method should return an **Observable<string>** or **AopNavigator object** wh
   
 
  1. Below example will make the decorator subscribe to the **Observable<string>** value returned from the targeted method and use that value to perform
-
  imperative routing.
  
  ```
@@ -89,7 +93,6 @@ public testMethod(): Observable<string> {
    
  
  2.  Below example will make the decorator subscribe to the **AopNavigator object** returned from the targeted method and use the **destinationPage** property value to perform
-
  imperative routing.
  
  ```
@@ -134,7 +137,7 @@ public testMethod(): void {
  #### RouteBackAsync
 The **RouteBackAsync** decorator can be used on a function which performs **rxjs** [aysnchronous](https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22) operations. The function should return an observable. The **RouteBackAsync** will subscribe to the passed observable and automatically perform popstate navigation to the previous page.
   
-1. Below example will popstate navigate back to previous page after the asynchronous operation inside the method is complete.
+Below example will popstate navigate back to previous page after the asynchronous operation inside the method is complete.
 ```
 @RouteBackAsync()
 public testMethod() {
@@ -146,6 +149,7 @@ public testMethod() {
 
 #### RouteToState
 RouteToState decorator when used on a targeted method, will automatically perform popste navigation to the destination page in the history state. If a negative number is provided, RouteToState will popstate naivage backwards equivalent to the passed integer, likewise it will popstate navigate forwards for a positive integer.
+
 
 1. Below example will traverse 2 states backwards of the browser history state
 ```
@@ -168,6 +172,7 @@ The **RouteToStateAsync** decorator can be used on a function which performs **r
 
 1. Below example will subscribe to the targeted method and use the returned value to traverse -2 states backwards of the browser history state after end of targeted method.
 
+
  ```
 @RouteToStateAsync()
 public testMethod(): Observable<number> {
@@ -181,7 +186,6 @@ public testMethod(): Observable<number> {
  ```
  
 2. Below example will make the decorator subscribe to the **AopNavigator object** returned from the targeted method and use the **destinationPage** property value to perform
-
 popstate navigation traversal of the browser history state.
 
  ```
@@ -293,7 +297,6 @@ A new Path can be dynamically created and to the Routing table and also navigate
 ```
 
 2. In the RouteNext or RouteNextAsync deocrator of the targeted function, return an **AopNav** object with the routeTransform property set.
-
 ```
 @RouteNext()
 public testMethod() {
@@ -317,7 +320,6 @@ A component that has been statically set to a path can be changed and navigated 
 ```
 
 2. In the RouteNext or RouteNextAsync deocrator of the targeted function, return an **AopNav** object with the routeTransform property set:
-
 ```
 @RouteNext()
 public testMethod() {
@@ -340,7 +342,6 @@ CanActivate guards can be added to a path at runtime. Suppose we want to add a g
 ```
 
 2. In the RouteNext or RouteNextAsync deocrator of the targeted function, return an **AopNav** object with the routeTransform property set:
-
 ```
 @RouteNext()
 public testMethod() {
