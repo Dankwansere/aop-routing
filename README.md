@@ -23,14 +23,14 @@ npm install aop-routing
 
 # Usage
 1. Add **AopRoutingModule** to the top level/root module import array.
-```
+```javascript
  imports: [
    ...
     AopRoutingModule
   ]
 ```
 2. Inject **AopNavigationService** into your top level/root module constructor.
-```
+```javascript
 export class AppModule {
   constructor(private navigationService: AopNavigationService) {}
  }
@@ -41,7 +41,7 @@ Aop-Routing has a lot of features pertaining to navigation in an Angular app.
 #### RouteNext
 The **RouteNext** decorator can be passed an optional string, and it will automatically perform an imperative routing to the next page at the end of the targeted method's execution.
 The below example will automatically route to page1 at the end of the testMethod execution.
-```
+```javascript
 @RouteNext('page1')
 public testMethod(): void {
  ...some logic...
@@ -50,7 +50,7 @@ public testMethod(): void {
 Should the need be required to pass a dynamic value to RouteNext, this can be done by allowing the targeted function to return a string or an **AopNavigator Object**.
 
 1. Below example will use the returned string value of the testMethod to route to the page
-```
+```javascript
 @RouteNext()
 public testMethod(): string {
  ...some logic...
@@ -59,7 +59,7 @@ return 'page1'
 ```
 
 2. Below example will use the returned **AopNavigator object** of the test method to perform routing.
-```
+```javascript
 @RouteNext()
 public testMethod(): Observable<AopNavigator> {
  ...some logic...
@@ -79,7 +79,7 @@ The method should return an **Observable<string>** or **AopNavigator object** wh
  1. Below example will make the decorator subscribe to the **Observable<string>** value returned from the targeted method and use that value to perform
  imperative routing.
  
- ```
+ ```javascript
 @RouteNextAsync()
 public testMethod(): Observable<string> {
    ...some logic...
@@ -95,7 +95,7 @@ public testMethod(): Observable<string> {
  2.  Below example will make the decorator subscribe to the **AopNavigator object** returned from the targeted method and use the **destinationPage** property value to perform
  imperative routing.
  
- ```
+ ```javascript
  @RouteNextAsync()
  public testMethod(): Observable<AopNavigator> {
    ...some logic...
@@ -116,7 +116,7 @@ public testMethod(): Observable<string> {
  An [Angular NavigationExtras object](https://angular.io/api/router/NavigationExtras) can be passed to RouteNext and RouteNextAsync to allow extra options to modify the Router navigation strategy.
   
 The below example will route to page1 and set the Router **skipLocationChange** to true
-```
+```javascript
 @RouteNext('page1',  {skipLocationChange: true})
 public testMethod(): void {
  ...some logic...
@@ -127,7 +127,7 @@ public testMethod(): void {
  #### RouteBack
  RouteBack decorator when used on a targeted method, will automatically perform popstate navigation back to the previous page after the end of the targeted method execution.
    
- ```
+ ```javascript
  @RouteBack()
  public testMethod() {
   ...some logic...
@@ -138,7 +138,7 @@ public testMethod(): void {
 The **RouteBackAsync** decorator can be used on a function which performs **rxjs** [aysnchronous](https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22) operations. The function should return an observable. The **RouteBackAsync** will subscribe to the passed observable and automatically perform popstate navigation to the previous page.
   
 Below example will popstate navigate back to previous page after the asynchronous operation inside the method is complete.
-```
+```javascript
 @RouteBackAsync()
 public testMethod() {
  return of(...some async operations).pipe(
@@ -152,7 +152,7 @@ RouteToState decorator when used on a targeted method, will automatically perfor
 
 
 1. Below example will traverse 2 states backwards of the browser history state
-```
+```javascript
 @RouteToState(-2)
 public testMethod() {
  ...some logic...
@@ -160,7 +160,7 @@ public testMethod() {
 ```
 
 2. Below example will traverse 2 states forward of the browser history state
-```
+```javascript
 @RouteToState(2)
 public testMethod() {
  ...some logic...
@@ -173,7 +173,7 @@ The **RouteToStateAsync** decorator can be used on a function which performs **r
 1. Below example will subscribe to the targeted method and use the returned value to traverse -2 states backwards of the browser history state after end of targeted method.
 
 
- ```
+ ```javascript
 @RouteToStateAsync()
 public testMethod(): Observable<number> {
    ...some logic...
@@ -188,7 +188,7 @@ public testMethod(): Observable<number> {
 2. Below example will make the decorator subscribe to the **AopNavigator object** returned from the targeted method and use the **destinationPage** property value to perform
 popstate navigation traversal of the browser history state.
 
- ```
+ ```javascript
  @RouteToStateAsync()
  public testMethod(): Observable<AopNavigator> {
    ...some logic...
@@ -219,7 +219,7 @@ AopNavigator interface contains the following properties that can be used to enh
 ### Custom user defined navigation logic
 Custom logic can be passed to the AopRouting library to override the default navigation logic of the decorators.
 1. Create a class that extends the **AopBaseNavigation** abstract class.
-```
+```javascript
 export class SampleClass extends AopBaseNavigation {}
 ```
 
@@ -228,7 +228,7 @@ export class SampleClass extends AopBaseNavigation {}
 * goToPreviousPage()
 * goToState()
 
-```
+```javascript
 export class SampleClass extends AopBaseNavigation {
  public goToNextPage(...) {
   ...custom logic...
@@ -245,7 +245,7 @@ export class SampleClass extends AopBaseNavigation {
 ```
 
 3. In the top level/root module add the **AopProxyNavigationService** to the providers array and set the **useClass** to the newly created class
-```
+```javascript
 @NgModule({
   imports: [
     ...
@@ -266,7 +266,7 @@ AopRouting can dynamically modify the routing table during runtime of an Angular
   
 To enable the experimental features of the AopRouting library, pass an object with **experimentalNav** property set to true to the **AopRoutingModule** forRoot method to the top level/root module:
   
-```
+```javascript
 @NgModule({
   ...
   imports: [
@@ -278,7 +278,7 @@ To enable the experimental features of the AopRouting library, pass an object wi
 ```
   
 The below Routing table will be used to demonstrate the features and examples:
-```
+```javascript
 const routes: Routes = [
   {path: 'page1', component: Page1Component},
   {path: 'page2', component: Page2Component }
@@ -289,7 +289,7 @@ const routes: Routes = [
 A new Path can be dynamically created and to the Routing table and also navigated to at runtime . Suppose we want to add **page3** that should route to **Page3Component**
 
 1. Create a routeTransform object and set the **path** and **component* property:
-```
+```javascript
  const routeTransform: RouteTransform = {
     path: 'page3',
     component: Page3Component
@@ -297,7 +297,7 @@ A new Path can be dynamically created and to the Routing table and also navigate
 ```
 
 2. In the RouteNext or RouteNextAsync deocrator of the targeted function, return an **AopNav** object with the routeTransform property set.
-```
+```javascript
 @RouteNext()
 public testMethod() {
   const routeTransform: RouteTransform = {
@@ -311,8 +311,8 @@ public testMethod() {
 #### Changing component of a Path at runtime
 A component that has been statically set to a path can be changed and navigated to at runtime. Suppose we want to change **page1** to route to **Page3Component** instead:
 
-1. Create a routeTransform object and set the **path** and **component* property:
-```
+1. Create a routeTransform object and set the **path** and **component** property:
+```javascript
  const routeTransform: RouteTransform = {
     path: 'page1',
     component: Page3Component
@@ -320,7 +320,7 @@ A component that has been statically set to a path can be changed and navigated 
 ```
 
 2. In the RouteNext or RouteNextAsync deocrator of the targeted function, return an **AopNav** object with the routeTransform property set:
-```
+```javascript
 @RouteNext()
 public testMethod() {
   const routeTransform: RouteTransform = {
@@ -334,7 +334,7 @@ public testMethod() {
 CanActivate guards can be added to a path at runtime. Suppose we want to add a guard **page1** path
 
 1. Create a routeTransform object and set the **path1** and **canActivateGuards** property by providing the name(s) of CanActivate guard(s) to be added:
-```
+```javascript
  const routeTransform: RouteTransform = {
     path: 'page1',
     canActivateGuards: [guard1, guard2]
@@ -342,7 +342,7 @@ CanActivate guards can be added to a path at runtime. Suppose we want to add a g
 ```
 
 2. In the RouteNext or RouteNextAsync deocrator of the targeted function, return an **AopNav** object with the routeTransform property set:
-```
+```javascript
 @RouteNext()
 public testMethod() {
   const routeTransform: RouteTransform = {
@@ -358,7 +358,7 @@ To remove CanActivate guards from a path at runtime, it's the same steps as addi
 
 #### Removing all CanActivate guards associated to a path.
 To remove all CanActivate guards associated to a path is the same steps as adding a guard. Instead the canActivateGuards property should be set to an empty array.
-```  
+```javascript
 @RouteNext()
 public testMethod() {
   const routeTransform: RouteTransform = {
