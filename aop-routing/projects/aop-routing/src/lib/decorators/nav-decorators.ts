@@ -28,6 +28,10 @@ export function RouteNext(page?: string, navigationExtras?: NavigationExtras) {
   };
 }
 
+/**
+ * Subscribes to wrapped method and uses its returned value to perform
+ * imperative navigation.
+ */
 export function RouteNextAsync() {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
@@ -75,6 +79,10 @@ export function RouteBack() {
   };
 }
 
+/**
+ * Subscribes to wrapped method and at the end of execution will use popstate
+ * navigation to navigate to the previous page.
+ */
 export function RouteBackAsync() {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
@@ -117,6 +125,10 @@ export function RouteToState(state?: number) {
   };
 }
 
+/**
+ * Subscribes to wrapped method and uses its returned value to perform popstate
+ * navigation to a specific state in the browser history.
+ */
 export function RouteToStateAsync() {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;

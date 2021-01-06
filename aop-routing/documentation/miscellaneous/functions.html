@@ -141,6 +141,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Creates an <code>Error</code> object with the passed string.</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -149,6 +151,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -160,6 +163,12 @@
                                     </td>
 
 
+                                    <td>
+                                        <ul>
+<li>message used to construct Error object</li>
+</ul>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -201,6 +210,9 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Determines if the passed object is of type <code>AopNav</code> by searching for a 
+<code>routeTransform</code> property.</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -209,6 +221,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -220,6 +233,12 @@
                                     </td>
 
 
+                                    <td>
+                                        <ul>
+<li>javascript object</li>
+</ul>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -261,6 +280,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Determines if the passed argument is defined and is also an instance of <code>AopBaseNavigation</code></p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -269,6 +290,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -280,6 +302,12 @@
                                     </td>
 
 
+                                    <td>
+                                        <ul>
+<li>proxy service</li>
+</ul>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -321,6 +349,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Determines if the passed value is a number.</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -330,6 +360,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -344,6 +375,12 @@
                                     </td>
 
 
+                                    <td>
+                                        <ul>
+<li>value to perform operation on</li>
+</ul>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -385,6 +422,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Determines if the passed value is a string.</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -394,6 +433,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -408,6 +448,12 @@
                                     </td>
 
 
+                                    <td>
+                                        <ul>
+<li>value to perform operation on</li>
+</ul>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -449,6 +495,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Logs error to the console.</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -457,6 +505,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -468,6 +517,12 @@
                                     </td>
 
 
+                                    <td>
+                                        <ul>
+<li>Error object</li>
+</ul>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -897,6 +952,14 @@ to navigate backwards using popState.</p>
 
 
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subscribes to wrapped method and at the end of execution will use popstate
+navigation to navigate to the previous page.</p>
+</div>
+
+                </td>
+            </tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered">
@@ -999,6 +1062,14 @@ to create an instance of the NavAux class, then proceeds to navgigate to destina
 
 
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subscribes to wrapped method and uses its returned value to perform
+imperative navigation.</p>
+</div>
+
+                </td>
+            </tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered">
@@ -1086,6 +1157,14 @@ to create an instance of the NavAux class, then proceeds to traverse through the
 
 
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subscribes to wrapped method and uses its returned value to perform popstate
+navigation to a specific state in the browser history.</p>
+</div>
+
+                </td>
+            </tr>
         </tbody>
     </table>
 </section>
