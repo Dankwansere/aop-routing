@@ -32,7 +32,7 @@ npm install aop-routing
 2. Inject **AopNavigationService** into your top level/root module constructor.
 ```javascript
 export class AppModule {
-  constructor(private navigationService: AopNavigationService) {}
+  constructor(private aopNavigationService: AopNavigationService) {}
  }
 ```
 ## Features
