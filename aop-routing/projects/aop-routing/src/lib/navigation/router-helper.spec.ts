@@ -30,7 +30,7 @@ describe('RouteHelper', () => {
       spyOn(RouteHelper, 'addNewRoutePath');
       const routeTransform: RouteTransform = {
         path: 'Test3',
-        component: '' as any,
+        component: 'TestComponent' as any,
         canActivateGuards: ['guard 1'],
       };
       RouteHelper.modifyRouteTable(mockRouter, routeTransform);

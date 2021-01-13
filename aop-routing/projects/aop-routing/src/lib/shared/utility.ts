@@ -61,3 +61,14 @@ export function createErrorObj(errorMsg: string): Error {
 export function logError(error: Error) {
   console.error(error);
 }
+
+/**
+ *  returns the value of the first element in the provided array that satisfies the provided testing function.
+ *  If no values satisfies the testing function, undefined is returned.
+ *
+ * @param array - array to search on
+ * @param item - item to search for
+ */
+export function findElementInArray(array: any[], item: any): any {
+  return array.find((element) => element.path === item);
+}

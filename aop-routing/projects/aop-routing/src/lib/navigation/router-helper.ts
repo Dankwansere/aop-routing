@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { createErrorObj, logError } from '../shared/utility';
+import { createErrorObj, findElementInArray, logError } from '../shared/utility';
 import { NavError } from '../model/enum';
 import { Route, Router, Routes } from '@angular/router';
 import { RouteTransform } from '../model/models';
@@ -19,7 +19,7 @@ export class RouteHelper {
   public static modifyRouteTable(router: Router, routeTransform: RouteTransform): void {
     this.pristineRouteConfig = cloneDeep(router.config);
     const pathObj = this.getRoutePathObj(router, routeTransform.path);
-    if (!pathObj) {
+    if (!pathObj && (routeTransform.path && routeTransform.component)) {
       this.addNewRoutePath(router, routeTransform.path, routeTransform.component, routeTransform.canActivateGuards);
     } else {
       if (routeTransform.component) {
@@ -90,23 +90,49 @@ export class RouteHelper {
    * @param guard - guards array
    */
   public static addOrRemoveCanActivateGuard(router: Router, path: string, guard: any[]): void {
-    if (!this.getRoutePathObj(router, path).canActivate) {
-      this.getRoutePathObj(router, path).canActivate = guard;
-    } else {
-      const clonedActivatedGuards = this.isCanActivateGuardExist(router, path, guard);
-      const updatedCanActivatedGuards = [...clonedActivatedGuards, ...guard];
-      this.getRoutePathObj(router, path).canActivate = updatedCanActivatedGuards;
+    if(this.getRoutePathObj(router, path)) {
+      if (!this.getRoutePathObj(router, path).canActivate) {
+        this.getRoutePathObj(router, path).canActivate = guard;
+      } else {
+        const clonedActivatedGuards = this.isCanActivateGuardExist(router, path, guard);
+        const updatedCanActivatedGuards = [...clonedActivatedGuards, ...guard];
+        this.getRoutePathObj(router, path).canActivate = updatedCanActivatedGuards;
+      }
     }
   }
 
   /**
    * Returns a Route object from the router table array.
    * @param router - Router object
-   * @param path - path name
+   * @param path - path name to search
    */
   public static getRoutePathObj(router: Router, path: string): Route {
-    return router.config.find((element) => element.path === path);
+   let pathObj = findElementInArray(router.config, path);
+
+   if(!pathObj) {
+     //traverse through children routes if any
+     for(let i = 0; i < router.config.length; i++) {
+        if(router.config[i].children) {
+          pathObj = this.searchChildRoutes(router.config[i].children, path);
+          if(pathObj) {
+            break;
+          }
+        }
+     }
+   }
+   return pathObj;
   }
+
+  /**
+   * 
+   * @param childRoutes - children routes array
+   * @param path - path name to search
+   */
+  public static searchChildRoutes(childRoutes: Routes, path: string ): Route {
+    return findElementInArray(childRoutes, path);
+  }
+
+  public 
 
   public static isCanActivateGuardExist(router: Router, path: string, guards: any[]): any[] {
     const clonedCanActivateGuards: any[] = cloneDeep(this.getRoutePathObj(router, path).canActivate);
