@@ -32,7 +32,7 @@ npm install aop-routing
 2. Inject **AopNavigationService** into your top level/root module constructor.
 ```javascript
 export class AppModule {
-  constructor(private navigationService: AopNavigationService) {}
+  constructor(private aopNavigationService: AopNavigationService) {}
  }
 ```
 ## Features
@@ -311,7 +311,7 @@ public testMethod() {
 #### Changing component of a Path at runtime
 A component that has been statically set to a path can be changed and navigated to at runtime. Suppose we want to change **page1** to route to **Page3Component** instead:
 
-1. Create a routeTransform object and set the **path** and **component* property:
+1. Create a routeTransform object and set the **path** and **component** property:
 ```javascript
  const routeTransform: RouteTransform = {
     path: 'page1',
