@@ -25,7 +25,7 @@ describe('#navigation-helper', () => {
       const mockObj = { routeTransform };
       const result = prepareNavObject(mockObj);
       expect(result.navAux).toBeDefined();
-      expect(result.routeTransform).toBeDefined();
+      expect(result.routeTransform).toBe(routeTransform);
     });
 
     it(`should return a NavAux object with the destination property
@@ -34,10 +34,10 @@ describe('#navigation-helper', () => {
       expect(result.destinationPage).toBe(page);
     });
 
-    it(`should return a NavAux object with the destination property
-            set to the passed in page argument`, () => {
-      const result: NavAux = prepareNavObject(undefined, page);
-      expect(result.destinationPage).toBe(page);
+    it(`should return a default NavAux object with the destination property
+            set to empty string if empty string is passed as argument to prepareNavObject method`, () => {
+      const result: NavAux = prepareNavObject(undefined, '');
+      expect(result.destinationPage).toBe('');
     });
 
     it(`should return a NavAux object with the navigationExtra property
