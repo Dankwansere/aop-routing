@@ -1,5 +1,32 @@
 # Aop-Routing
 Provides the capability to perform [Imperative and Popstate navigation](https://medium.com/analytics-vidhya/angular-routing-imperative-vs-popstate-7d254b495c54) operations in Angular through the ease of typescript decorators, **without the need to import the Angular Router object**
+
+**Table of Contents**
+
+- [Aop-Routing](#aop-routing)
+- [Installation](#installation)
+- [Usage](#usage)
+  * [Features](#features)
+    + [Decorator Navigation](#decorator-navigation)
+      - [RouteNext](#routenext)
+      - [RouteNextAsync](#routenextasync)
+      - [NavigationExtras for RouteNext and RouteNextAsync](#navigationextras-for-routenext-and-routenextasync)
+      - [RouteBack](#routeback)
+      - [RouteBackAsync](#routebackasync)
+      - [RouteToState](#routetostate)
+      - [RouteToStateAsync](#routetostateasync)
+    + [AopNavigator Interface capabilities](#aopnavigator-interface-capabilities)
+    + [Custom user defined navigation logic](#custom-user-defined-navigation-logic)
+    + [Experiemental Features](#experiemental-features)
+      - [Adding new Path to the Routing Table at runtime.](#adding-new-path-to-the-routing-table-at-runtime)
+      - [Changing component of a Path at runtime](#changing-component-of-a-path-at-runtime)
+      - [Add CanActivate guard(s) at runtime](#add-canactivate-guard-s--at-runtime)
+      - [Removing guard(s) from a path](#removing-guard-s--from-a-path)
+      - [Removing all CanActivate guards associated to a path.](#removing-all-canactivate-guards-associated-to-a-path)
+  * [Unit Tests](#unit-tests)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
   
 **List of features include**
 * Imperative navigation using decorators
@@ -376,6 +403,31 @@ public testMethod() {
  };
   return {routeTransform}
 }
+```
+
+## Unit Tests
+To succesfully write unit tests on methods that are decorated with AopRouting decorators create an instance AopNavigationService in your beforeEach() with a passed in Partial<Router> and Partial<Location>. This will prevent failed test cases due to **Cannot read property 'navigate' of undefined** error.
+
+
+  
+```javascript
+describe('TestComponent', () => {
+  ...
+  mockAopNavigationService: AopNavigationService,
+  const router: Partial<Router> = {
+    navigate: function()  {
+      return {} as any;
+    }
+  };
+  
+  const location: Partial<Location> = {};
+
+  beforeEach(() => {
+    ...
+    mockAopNavigationService = new AopNavigationService(router as Router, location as Location);
+    ...
+  });
+  
 ```
 
 
