@@ -1,5 +1,5 @@
 /*
- * Public API Surface of ng-velocity
+ * Public API Surface of aop-routing
  */
 
 export * from './lib/aop-routing.module';
@@ -17,3 +17,4 @@ export { RouteTransform } from './lib/model/models';
 export { AopNavigationService } from './lib/navigation/aop-navigation.service';
 export { AopBaseNavigation } from './lib/model/abstract/aop-base-navigation';
 export { AopProxyNavigationService } from './lib/navigation/aop-proxy-navigation.service';
+export { AopRoute } from './lib/model/enum';
