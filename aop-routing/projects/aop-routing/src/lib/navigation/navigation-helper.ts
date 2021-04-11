@@ -1,6 +1,6 @@
 import { NavigationExtras } from '@angular/router';
 import { NavAux } from '../model/nav-aux';
-import { isAopNavObj } from '../shared/utility';
+import { isAopNavObj, isEmptyString } from '../shared/utility';
 
 /**
  * Calls the `createNavObj` or `updateNavObj` to create an instance of the NavAux class with the passed in parameters.
@@ -18,7 +18,7 @@ export function prepareNavObject(result: any, page?: string | number, navigation
     };
   }
 
-  if (page) {
+  if (page || isEmptyString(page as string)) {
     navObj = createNavObj(page, navigationExtras);
   }
 
