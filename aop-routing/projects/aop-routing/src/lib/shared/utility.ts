@@ -12,6 +12,14 @@ export function isTypeString(value: any): boolean {
 }
 
 /**
+ * Determins if passed string value is an empty string.
+ * @param value - value to perform operation on 
+ */
+export function isEmptyString(value: string): boolean {
+  return value === '';
+}
+
+/**
  * Determines if the passed value is a number.
  * @param value - value to perform operation on
  */
