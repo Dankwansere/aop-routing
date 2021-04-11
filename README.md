@@ -70,6 +70,14 @@ return obj;
 }
 ```
 
+3. To prevent the aop-routing from performing a navigation return the enum **AopRoute.SKIP_ROUTE**
+```javascript
+public testMethod(): Observable<AopNavigator> {
+ ...some logic...
+return AopRoute.SKIP_ROUTE;
+}
+```
+
 #### RouteNextAsync
 The **RouteNextAsync** decorator can be used on a function which performs **rxjs** [aysnchronous](https://medium.com/analytics-vidhya/asynchronous-programming-in-a-nutshell-theory-d5fd07cf3b22) operations. The function should return an observable. The **RouteNextAsync** will subscribe to the passed observable and automatically perform imperative navigation.
 
@@ -312,6 +320,7 @@ public testMethod() {
 A component that has been statically set to a path can be changed and navigated to at runtime. Suppose we want to change **page1** to route to **Page3Component** instead:
 
 1. Create a routeTransform object and set the **path** and **component** property:
+
 ```javascript
  const routeTransform: RouteTransform = {
     path: 'page1',
@@ -369,6 +378,10 @@ public testMethod() {
 }
 ```
 
+
+
 ```diff
 - Changes made to the Routing table are not persistent. They are reverted back upon completion of navigation
 ```
+
+
