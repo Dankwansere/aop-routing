@@ -38,6 +38,11 @@ export class MockDecoratorClass {
   }
 
   @RouteNext()
+  mockNextMethodWithEmptyPath(): string {
+    return '';
+  }
+
+  @RouteNext()
   mockNextObjMethod(): NavAux {
     return new NavAux('aop-nav');
   }
