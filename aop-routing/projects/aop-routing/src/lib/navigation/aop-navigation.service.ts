@@ -6,6 +6,7 @@ import { AopProxyNavigationService } from './aop-proxy-navigation.service';
 import {
   createErrorObj,
   isAopNavObj,
+  isEmptyString,
   isProxyNavigationProvided,
   isTypeNumber,
   isTypeString,
@@ -125,7 +126,8 @@ export class AopNavigationService {
   }
 
   public static executeImperativeNavigation(navObj: any): void {
-    const destinationPage = navObj.destinationPage || navObj.routeTransform.path;
+    const destinationPage =
+    isEmptyString(navObj.destinationPage) ? navObj.destinationPage : navObj.destinationPage || navObj.routeTransform.path;
 
     if (isTypeString(destinationPage)) {
       try {
