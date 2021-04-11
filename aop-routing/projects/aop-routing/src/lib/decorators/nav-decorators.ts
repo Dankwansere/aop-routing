@@ -1,9 +1,9 @@
 import { NavigationExtras } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { NavError } from '../model/enum';
+import { AopRoute, NavError } from '../model/enum';
 import { AopNavigationService } from '../navigation/aop-navigation.service';
 import { prepareNavObject } from '../navigation/navigation-helper';
-import { createErrorObj, isTypeNumber, isTypeString, logError } from '../shared/utility';
+import { createErrorObj, isEmptyString, isTypeNumber, isTypeString, logError } from '../shared/utility';
 
 /**
  * Executes the original wrapped method and uses the return value along with the passed in arguments of the decorator
@@ -16,14 +16,17 @@ export function RouteNext(page?: string, navigationExtras?: NavigationExtras) {
     const originalMethod = descriptor.value;
     descriptor.value = function (...args: any[]) {
       const result = originalMethod.apply(this, args);
+
+      if(result !== AopRoute.SKIP_ROUTE) {
       let navObj;
-      if (isTypeString(result)) {
-        page = result || page;
-        navObj = prepareNavObject(undefined, page, navigationExtras);
-      } else {
-        navObj = prepareNavObject(result, page, navigationExtras);
+        if (isTypeString(result)) {
+          page = isEmptyString(result) ? result : result || page;
+          navObj = prepareNavObject(undefined, page, navigationExtras);
+        } else {
+          navObj = prepareNavObject(result, page, navigationExtras);
+        }
+        AopNavigationService.goToNextPage(navObj);
       }
-      AopNavigationService.goToNextPage(navObj);
     };
   };
 }
