@@ -10,3 +10,7 @@ export enum NavError {
   EXPERIMENTAL_FEATURE_COMPONENT_MISSING = 'No component provided to create a new route path object',
   EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM = 'EXPIREMENTAL_FEATURE_ROUTE_TRANSFORM',
 }
+
+export enum AopRoute {
+  SKIP_ROUTE = 'Cancel Route'
+}

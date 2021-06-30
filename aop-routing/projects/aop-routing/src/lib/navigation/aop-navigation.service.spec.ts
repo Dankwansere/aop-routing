@@ -181,7 +181,24 @@ describe('NavigationService', () => {
     it('should call navigate method of Router object', () => {
       const navAux = new NavAux('aop-nav');
       AopNavigationService.executeImperativeNavigation(navAux);
-      expect(mockRouter.navigate).toHaveBeenCalledWith([navAux.destinationPage], navAux.navigationExtra);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['aop-nav'], navAux.navigationExtra);
+    });
+
+    it('should call navigate method of Router object with an empty string passed', () => {
+      const navAux = new NavAux('');
+      AopNavigationService.executeImperativeNavigation(navAux);
+      expect(mockRouter.navigate).toHaveBeenCalledWith([''], navAux.navigationExtra);
+    });
+
+    it('should call navigate method with the value of routeTransform.path', () => {
+      const routeTransformObj = {
+        routeTransform: {
+          path: 'route-transform-path'
+        }
+      };
+
+      AopNavigationService.executeImperativeNavigation(routeTransformObj);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['route-transform-path'], undefined);
     });
 
     it('should throw error if exception thrown trying to call navigate method of router object', () => {
