@@ -36,7 +36,7 @@ export function isProxyNavigationProvided(proxyNavRef: AopProxyNavigationService
 }
 
 /**
- * Determines if the passed object is of type `AopNav` by searching for a 
+ * Determines if the passed object is of type `AopNav` by searching for a
  * `routeTransform` property.
  * @param navObj - javascript object
  */
