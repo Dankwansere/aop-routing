@@ -17,7 +17,7 @@ export function RouteNext(page?: string, navigationExtras?: NavigationExtras) {
     descriptor.value = function (...args: any[]) {
       const result = originalMethod.apply(this, args);
 
-      if(result !== AopRoute.SKIP_ROUTE) {
+      if (result !== AopRoute.SKIP_ROUTE) {
       let navObj;
         if (isTypeString(result)) {
           page = isEmptyString(result) ? result : result || page;
