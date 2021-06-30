@@ -78,6 +78,7 @@ export class AopNavigationService {
       if (navObj && navObj.preprocess) {
         this.executePreProcessLogic(navObj.preprocess, navObj.param);
       }
+      
       try {
         this.locationRef.back();
       } catch (e) {
