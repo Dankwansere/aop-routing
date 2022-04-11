@@ -98,6 +98,6 @@
     "tslib": "^1.9.0",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "~3.1.6"
+    "typescript": "^3.5.3"
   }
 }
