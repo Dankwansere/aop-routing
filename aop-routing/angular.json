@@ -14,6 +14,10 @@
           "options": {
             "tsConfig": "projects/aop-routing/tsconfig.lib.json",
             "project": "projects/aop-routing/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+            }
           }
         },
         "test": {
