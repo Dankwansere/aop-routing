@@ -26,5 +26,8 @@
         "dist/aop-routing/*"
       ]
     }
+  },
+  "angularCompilerOptions": {
+    "enableIvy": false
   }
 }
