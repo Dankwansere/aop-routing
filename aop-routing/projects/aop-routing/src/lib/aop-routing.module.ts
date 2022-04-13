@@ -5,7 +5,7 @@ import { AopConfig } from './model/models';
   imports: [],
 })
 export class AopRoutingModule {
-  static forRoot(config: AopConfig): ModuleWithProviders {
+  static forRoot(config: AopConfig): ModuleWithProviders<AopRoutingModule> {
     return {
       ngModule: AopRoutingModule,
       providers: [{ provide: AopConfig, useValue: config }],

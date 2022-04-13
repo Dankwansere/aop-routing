@@ -1,6 +1,6 @@
 {
   "name": "aop-routing",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "description": "Provides the capability to perform Imperative and Popstate navigation operationsin Angular through the ease of typescript decorators, without the need to import the Angular Router object",
   "author": "Eric Sarpong",
   "repository": {
@@ -61,7 +61,6 @@
     "@angular/router": "~10.2.5",
     "core-js": "^2.5.4",
     "lodash.clonedeep": "^4.5.0",
-    "node-sass": "^4.13.0",
     "rxjs": "~6.6.7",
     "tslib": "^1.9.0",
     "zone.js": "~0.10.3"
@@ -90,7 +89,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-mocha-reporter": "^2.2.5",
     "karma-spec-reporter": "0.0.32",
-    "ng-packagr": "^9.1.5",
+    "ng-packagr": "10.0.0",
     "prettier": "^2.2.1",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
